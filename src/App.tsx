@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import test from './assets/test.png';
-import earth from './assets/Earth.png';
+import { useState } from 'react';
 import './App.css';
 
 interface cardType {
@@ -13,12 +11,10 @@ interface cardType {
 function App() {
   const [uniqueCards, setUniqueCards] = useState<cardType[]>([]);
 
-  const [firstSelected, setFirstSelected] = useState<cardType | null>();
-  const [secondSelected, setSecondSelected] = useState<cardType | null>();
+  const [selectedCards, setSelectedCards] = useState<cardType[]>([]);
+  const [matchedCards, setMatchedCards] = useState<Set<string>>(new Set());
 
-  const [matchedCards, setMatchedCards] = useState<cardType[]>([]);
-
-  const isBoardLocked = firstSelected && secondSelected;
+  const isBoardLocked = selectedCards.length === 2;
 
   const allCards: cardType[] = [
     { id: 1, img: '🍎', name: 'apple' },
@@ -59,36 +55,43 @@ function App() {
     setUniqueCards(array);
   };
 
-  console.log(firstSelected);
-  console.log(secondSelected);
-  console.log(matchedCards);
+  console.log('selected', selectedCards);
+  console.log('locked', isBoardLocked);
 
   const handleCardClick = (card: cardType) => {
     if (isBoardLocked) return;
+    console.log('click', card.name);
 
-    if (firstSelected) {
-      setSecondSelected(card);
-    } else {
-      setFirstSelected(card);
+    const isAlreadySelected = selectedCards.some((selected) => selected.uniqueId === card.uniqueId);
+
+    if (isAlreadySelected) return;
+
+    const nextSelectedCards = [...selectedCards, card];
+    setSelectedCards(nextSelectedCards);
+
+    if (nextSelectedCards.length === 2) {
+      handleCompareCards(nextSelectedCards);
     }
   };
 
-  useEffect(() => {
-    if (isBoardLocked) {
-      if (firstSelected.name === secondSelected.name) {
-        console.log('Совпали');
-        setMatchedCards((prev) => [...prev, firstSelected, secondSelected]);
-        setFirstSelected(null);
-        setSecondSelected(null);
-      }
+  const handleCompareCards = (cards: cardType[]) => {
+    const [first, second] = cards;
 
-      if (firstSelected.name !== secondSelected.name) {
-        console.log('Несовпали');
-        setFirstSelected(null);
-        setSecondSelected(null);
-      }
+    if (first.name === second.name) {
+      setMatchedCards((prev) => {
+        const next = new Set(prev);
+        next.add(first.name);
+        return next;
+      });
+
+      setSelectedCards([]);
+      return;
     }
-  }, [firstSelected, secondSelected, isBoardLocked]);
+
+    setSelectedCards([]);
+    // setTimeout(() => {
+    // }, 1000);
+  };
 
   return (
     <>
@@ -97,7 +100,7 @@ function App() {
       </button>
       <div className="board">
         {uniqueCards.map((card, index) => {
-          const isMatched = matchedCards.some((matched) => matched.uniqueId === card.uniqueId);
+          const isMatched = matchedCards.has(card.name);
 
           return (
             <button
