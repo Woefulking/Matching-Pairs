@@ -9,12 +9,16 @@ interface cardType {
 }
 
 function App() {
-  const [uniqueCards, setUniqueCards] = useState<cardType[]>([]);
+  const [deck, setDeck] = useState<cardType[]>([]);
+  const uniqueCardsInDeck = new Set(deck.map((card) => card.name));
 
   const [selectedCards, setSelectedCards] = useState<cardType[]>([]);
   const [matchedCards, setMatchedCards] = useState<Set<string>>(new Set());
 
   const isBoardLocked = selectedCards.length === 2;
+  const isWin = deck.length > 0 && matchedCards.size === uniqueCardsInDeck.size;
+
+  console.log(uniqueCardsInDeck);
 
   const allCards: cardType[] = [
     { id: 1, img: '🍎', name: 'apple' },
@@ -52,7 +56,7 @@ function App() {
 
   const handleStart = () => {
     const array = generateGameDeck(allCards, 4);
-    setUniqueCards(array);
+    setDeck(array);
   };
 
   console.log('selected', selectedCards);
@@ -88,9 +92,9 @@ function App() {
       return;
     }
 
-    setSelectedCards([]);
-    // setTimeout(() => {
-    // }, 1000);
+    setTimeout(() => {
+      setSelectedCards([]);
+    }, 1000);
   };
 
   return (
@@ -99,8 +103,11 @@ function App() {
         НАЖМИ НА МЕНЯ
       </button>
       <div className="board">
-        {uniqueCards.map((card, index) => {
+        {deck.map((card, index) => {
+          const isSelected = selectedCards.some((selected) => selected.uniqueId === card.uniqueId);
           const isMatched = matchedCards.has(card.name);
+
+          const isOpened = isSelected || isMatched;
 
           return (
             <button
@@ -109,11 +116,12 @@ function App() {
               key={index}
               onClick={() => handleCardClick(card)}
             >
-              {card.img}
+              {isOpened && card.img}
             </button>
           );
         })}
       </div>
+      {isWin && <div>ПОБЕДА</div>}
     </>
   );
 }
