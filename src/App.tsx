@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
 interface cardType {
@@ -9,16 +9,17 @@ interface cardType {
 }
 
 function App() {
-  const [deck, setDeck] = useState<cardType[]>([]);
-  const uniqueCardsInDeck = new Set(deck.map((card) => card.name));
+  const [gameDeck, setGameDeck] = useState<cardType[]>([]);
+  const uniqueCardsInDeck = new Set(gameDeck.map((card) => card.name));
 
   const [selectedCards, setSelectedCards] = useState<cardType[]>([]);
   const [matchedCards, setMatchedCards] = useState<Set<string>>(new Set());
 
   const isBoardLocked = selectedCards.length === 2;
-  const isWin = deck.length > 0 && matchedCards.size === uniqueCardsInDeck.size;
+  const isWin = gameDeck.length > 0 && matchedCards.size === uniqueCardsInDeck.size;
 
-  console.log(uniqueCardsInDeck);
+  const matchTimerRef = useRef<number | null>(null);
+  const gameTimerRef = useRef<number | null>(null);
 
   const allCards: cardType[] = [
     { id: 1, img: '🍎', name: 'apple' },
@@ -55,16 +56,14 @@ function App() {
   };
 
   const handleStart = () => {
-    const array = generateGameDeck(allCards, 4);
-    setDeck(array);
+    const newDeck = generateGameDeck(allCards, 4);
+    setGameDeck(newDeck);
+    endTimeRef.current = Date.now() + timeLeft * 1000;
+    localStorage.setItem('endTime', String(endTimeRef.current));
   };
-
-  console.log('selected', selectedCards);
-  console.log('locked', isBoardLocked);
 
   const handleCardClick = (card: cardType) => {
     if (isBoardLocked) return;
-    console.log('click', card.name);
 
     const isAlreadySelected = selectedCards.some((selected) => selected.uniqueId === card.uniqueId);
 
@@ -92,18 +91,54 @@ function App() {
       return;
     }
 
-    setTimeout(() => {
+    matchTimerRef.current = setTimeout(() => {
       setSelectedCards([]);
     }, 1000);
   };
+
+  const handleRestartGame = () => {
+    if (matchTimerRef.current) {
+      clearInterval(matchTimerRef.current);
+      matchTimerRef.current = null;
+    }
+
+    const newDeck = generateGameDeck(allCards, 4);
+    setGameDeck(newDeck);
+    setSelectedCards([]);
+    setMatchedCards(new Set<string>());
+  };
+
+  function formatTime(timeLeft: number) {
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  }
+
+  const [timeLeft, setTimeLeft] = useState<number>(20);
+  const endTimeRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (gameDeck.length) {
+      const timer = setInterval(() => {
+        if (endTimeRef.current) {
+          const saved = Number(localStorage.getItem('endTime'));
+          const remaining = Math.ceil((saved - Date.now()) / 1000);
+          setTimeLeft(remaining);
+        }
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [gameDeck, timeLeft]);
 
   return (
     <>
       <button onClick={() => handleStart()} className="btn">
         НАЖМИ НА МЕНЯ
       </button>
+      <span className="timer">{formatTime(timeLeft)}</span>
       <div className="board">
-        {deck.map((card, index) => {
+        {gameDeck.map((card, index) => {
           const isSelected = selectedCards.some((selected) => selected.uniqueId === card.uniqueId);
           const isMatched = matchedCards.has(card.name);
 
@@ -121,7 +156,14 @@ function App() {
           );
         })}
       </div>
-      {isWin && <div>ПОБЕДА</div>}
+      {isWin && (
+        <>
+          <div>ПОБЕДА</div>
+          <button className="btn" type="button" onClick={() => handleRestartGame()}>
+            Restart
+          </button>
+        </>
+      )}
     </>
   );
 }

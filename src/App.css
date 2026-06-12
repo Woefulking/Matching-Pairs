@@ -188,6 +188,11 @@
 
 .btn {
   height: 60px;
+  margin-bottom: 25px;
+}
+
+.timer {
+  font-size: 18px;
 }
 
 .test {
