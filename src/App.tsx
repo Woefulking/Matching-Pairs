@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { Menu } from './Menu';
 import { Game } from './Game';
@@ -23,7 +23,15 @@ export const allCards: cardType[] = [
 
 function App() {
   type ScreenType = 'menu' | 'game' | 'settings' | 'store' | 'leaderboard';
-  const [screen, setScreen] = useState<ScreenType>('menu');
+  const [screen, setScreen] = useState<ScreenType>(() => {
+    const savedScreen = localStorage.getItem('screen') as ScreenType;
+    if (savedScreen) return savedScreen;
+    return 'menu';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('screen', screen);
+  }, [screen]);
 
   function getCurrentScreen() {
     switch (screen) {

@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { allCards, type cardType } from './App';
-import { generateGameDeck } from './generateDeck';
+import { generateGameDeck } from './utils/generateDeck';
+import { formatTime } from './utils/formatTime';
 
 interface SavedGameState {
   deck: cardType[];
-  selected: cardType[];
   matched: string[];
 }
 
@@ -18,12 +18,9 @@ export const Game = () => {
     const saved = getSavedGameData();
     return saved ? saved.deck : generateGameDeck(allCards, 4);
   });
-  const uniqueCardsInDeck = new Set(gameDeck.map((card) => card.name));
 
-  const [selectedCards, setSelectedCards] = useState<cardType[]>(() => {
-    const saved = getSavedGameData();
-    return saved ? saved.selected : [];
-  });
+  const uniqueCardsInDeck = new Set(gameDeck.map((card) => card.name));
+  const [selectedCards, setSelectedCards] = useState<cardType[]>([]);
 
   const [matchedCards, setMatchedCards] = useState<Set<string>>(() => {
     const saved = getSavedGameData();
@@ -32,11 +29,10 @@ export const Game = () => {
 
   const matchTimerRef = useRef<number | null>(null);
 
-  const isCardClickLocked = selectedCards.length === 2;
-
   type GameStatus = 'playing' | 'won' | 'lost';
   const [gameStatus, setGameStatus] = useState<GameStatus>('playing');
 
+  const isCardClickLocked = selectedCards.length === 2 || gameStatus !== 'playing';
   useEffect(() => {
     if (gameStatus !== 'playing') {
       localStorage.removeItem('gameState');
@@ -45,12 +41,12 @@ export const Game = () => {
 
     const stateToSave: SavedGameState = {
       deck: gameDeck,
-      selected: selectedCards,
       matched: Array.from(matchedCards),
     };
 
     localStorage.setItem('gameState', JSON.stringify(stateToSave));
-  }, [gameDeck, selectedCards, matchedCards, gameStatus]);
+  }, [gameDeck, matchedCards, gameStatus]);
+
   //ОБРАБОТКА КЛИКОВ
   const handleCardClick = (card: cardType) => {
     if (isCardClickLocked) return;
@@ -105,13 +101,6 @@ export const Game = () => {
     setSelectedCards([]);
   };
 
-  //ФОРМАТИРОВАНИЕ ВРЕМЕНИ
-  function formatTime(timeLeft: number) {
-    const m = Math.floor(timeLeft / 60);
-    const s = timeLeft % 60;
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-  }
-
   const [timeLeft, setTimeLeft] = useState(() => {
     const savedTime = localStorage.getItem('savedTime');
     if (savedTime) {
@@ -139,11 +128,13 @@ export const Game = () => {
 
     gameTimerRef.current = setInterval(() => {
       const remainingTime = Math.ceil((endTime - Date.now()) / 1000);
-      setTimeLeft(remainingTime);
 
       if (remainingTime <= 0) {
+        setTimeLeft(0);
         setGameStatus('lost');
         localStorage.removeItem('savedTime');
+      } else {
+        setTimeLeft(remainingTime);
       }
     }, 1000);
 
