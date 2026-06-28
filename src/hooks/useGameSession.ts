@@ -61,10 +61,13 @@ export function GameSessionReducer(
       const { firstCard, secondCard } = state.selectedCards;
       if (firstCard && secondCard) {
         if (firstCard.name === secondCard.name) {
+          const totalPairs = new Set(state.deck.map((card) => card.name)).size;
           const newMatched = new Set(state.matchedCards);
           newMatched.add(firstCard.name);
+          const isWon = newMatched.size === totalPairs;
           return {
             ...state,
+            status: isWon ? 'won' : 'playing',
             selectedCards: { firstCard: null, secondCard: null },
             matchedCards: newMatched,
           };
@@ -102,6 +105,9 @@ export function useGameSession() {
   };
 
   const handleCardClick = (card: CardType) => {
+    if (state.status !== 'playing') return;
+
+    if (state.selectedCards.firstCard && state.selectedCards.secondCard) return;
     dispatch({ type: 'selectCard', payload: card });
   };
 
