@@ -3,7 +3,7 @@ import {
   GAME_DIFFICULTIES,
   type CardType,
   type GameDifficultyType,
-  type GameSessionAction,
+  type GameSessionActions,
   type GameSessionState,
 } from '../types/types';
 import { getSavedState } from '../utils/getSavedGameData';
@@ -14,25 +14,29 @@ export const initialState: GameSessionState = {
   status: 'idle',
   difficulty: 'easy',
   deck: [],
+  pairsCount: 0,
   selectedCards: { firstCard: null, secondCard: null },
   matchedCards: new Set<string>(),
   timeLeft: 90,
+  moves: 0,
 };
 
 export function GameSessionReducer(
   state: GameSessionState,
-  action: GameSessionAction
+  action: GameSessionActions
 ): GameSessionState {
   switch (action.type) {
     case 'startGame': {
       const { deck, difficulty } = action.payload;
       return {
-        deck,
-        difficulty,
-        timeLeft: GAME_DIFFICULTIES[difficulty].time,
         status: 'playing',
+        difficulty,
+        deck,
+        pairsCount: new Set<string>(deck.map((card) => card.name)).size,
         selectedCards: { firstCard: null, secondCard: null },
         matchedCards: new Set<string>(),
+        timeLeft: GAME_DIFFICULTIES[difficulty].time,
+        moves: 0,
       };
     }
     case 'selectCard': {
@@ -59,32 +63,36 @@ export function GameSessionReducer(
     }
     case 'compareCards': {
       const { firstCard, secondCard } = state.selectedCards;
-      if (firstCard && secondCard) {
-        if (firstCard.name === secondCard.name) {
-          const totalPairs = new Set(state.deck.map((card) => card.name)).size;
-          const newMatched = new Set(state.matchedCards);
-          newMatched.add(firstCard.name);
-          const isWon = newMatched.size === totalPairs;
-          return {
-            ...state,
-            status: isWon ? 'won' : 'playing',
-            selectedCards: { firstCard: null, secondCard: null },
-            matchedCards: newMatched,
-          };
-        }
+
+      if (!firstCard || !secondCard) return state;
+
+      const nextMoves = state.moves + 1;
+
+      if (firstCard.name === secondCard.name) {
+        const newMatched = new Set(state.matchedCards);
+        newMatched.add(firstCard.name);
+
+        const isWin = newMatched.size === state.pairsCount;
+
+        return {
+          ...state,
+          status: isWin ? 'win' : 'playing',
+          selectedCards: { firstCard: null, secondCard: null },
+          matchedCards: newMatched,
+          moves: nextMoves,
+        };
       }
-      return { ...state, selectedCards: { firstCard: null, secondCard: null } };
+
+      return { ...state, selectedCards: { firstCard: null, secondCard: null }, moves: nextMoves };
     }
     case 'tick': {
       if (state.status !== 'playing') return state;
-
-      if (state.timeLeft === null) return state;
 
       const nextTime = Math.max(0, state.timeLeft - 1);
       return {
         ...state,
         timeLeft: nextTime,
-        status: nextTime === 0 ? 'lost' : state.status,
+        status: nextTime === 0 ? 'loss' : state.status,
       };
     }
     case 'clear': {
@@ -96,22 +104,23 @@ export function GameSessionReducer(
   }
 }
 
-export function useGameSession() {
+export function useGameSession(onWin: (coins: number) => void) {
   const [state, dispatch] = useReducer(GameSessionReducer, initialState, getSavedState);
 
-  const handleStartGame = (difficulty: GameDifficultyType) => {
+  const startGame = (difficulty: GameDifficultyType) => {
     const deck = generateGameDeck(allCards, 4);
     dispatch({ type: 'startGame', payload: { deck, difficulty } });
   };
 
-  const handleCardClick = (card: CardType) => {
+  const cardClick = (card: CardType) => {
     if (state.status !== 'playing') return;
 
     if (state.selectedCards.firstCard && state.selectedCards.secondCard) return;
     dispatch({ type: 'selectCard', payload: card });
   };
 
-  const handleClear = () => {
+  const clear = () => {
+    localStorage.removeItem('savedState');
     dispatch({ type: 'clear' });
   };
 
@@ -152,5 +161,12 @@ export function useGameSession() {
     );
   }, [state]);
 
-  return { state, handleStartGame, handleCardClick, handleClear };
+  //Отслеживание победы и добавление монет в этот момент
+  useEffect(() => {
+    if (state.status !== 'win') return;
+    const coins = GAME_DIFFICULTIES[state.difficulty].coins;
+    onWin(coins);
+  }, [state.status, state.difficulty, onWin]);
+
+  return { state, startGame, cardClick, clear };
 }

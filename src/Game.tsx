@@ -2,12 +2,15 @@ import { useGameSession } from './hooks/useGameSession';
 import { GAME_DIFFICULTIES, type GameDifficultyType } from './types/types';
 import { formatTime } from './utils/formatTime';
 
-export const Game = () => {
-  const { state, handleCardClick, handleStartGame, handleClear } = useGameSession();
+interface GameProps {
+  onWin: (coins: number) => void;
+}
+export const Game = ({ onWin }: GameProps) => {
+  const { state, cardClick, startGame, clear } = useGameSession(onWin);
   const { firstCard, secondCard } = state.selectedCards;
 
   const isIdle = state.status === 'idle';
-  const isGameFinished = state.status === 'won' || state.status === 'lost';
+  const isGameFinished = state.status === 'win' || state.status === 'loss';
   return (
     <>
       {isIdle ? (
@@ -16,10 +19,10 @@ export const Game = () => {
             <button
               key={difficulty}
               onClick={() => {
-                handleStartGame(difficulty as GameDifficultyType);
+                startGame(difficulty as GameDifficultyType);
               }}
             >
-              {difficulty} ({param.time}s)
+              {param.label} ({param.time}s)
             </button>
           ))}
         </div>
@@ -38,7 +41,7 @@ export const Game = () => {
                   type="button"
                   className={`card ${isMatched ? 'card--matched' : ''}`}
                   key={index}
-                  onClick={() => handleCardClick(card)}
+                  onClick={() => cardClick(card)}
                 >
                   {isOpened && card.img}
                 </button>
@@ -47,8 +50,8 @@ export const Game = () => {
           </div>
           {isGameFinished && (
             <>
-              <span>Вы {state.status === 'won' ? 'победили' : 'Проиграли'}</span>
-              <button type="button" onClick={() => handleStartGame(state.difficulty)}>
+              <span>Вы {state.status === 'win' ? 'победили' : 'Проиграли'}</span>
+              <button type="button" onClick={() => startGame(state.difficulty)}>
                 Повторить
               </button>
             </>

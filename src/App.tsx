@@ -1,17 +1,11 @@
-import { useEffect, useState } from 'react';
 import './App.css';
 import { Menu } from './Menu';
 import { Game } from './Game';
-
-export interface cardType {
-  id: number;
-  img: string;
-  name: string;
-  uniqueId?: string;
-}
+import { useApp } from './hooks/useApp';
+import type { CardType } from './types/types';
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const allCards: cardType[] = [
+export const allCards: CardType[] = [
   { id: 1, img: '🍎', name: 'apple' },
   { id: 2, img: '🍌', name: 'banana' },
   { id: 3, img: '🍇', name: 'grape' },
@@ -22,29 +16,14 @@ export const allCards: cardType[] = [
 ];
 
 function App() {
-  type ScreenType = 'menu' | 'game' | 'settings' | 'store' | 'leaderboard';
-  const [screen, setScreen] = useState<ScreenType>(() => {
-    const savedScreen = localStorage.getItem('screen') as ScreenType;
-    if (savedScreen) return savedScreen;
-    return 'menu';
-  });
-
-  useEffect(() => {
-    localStorage.setItem('screen', screen);
-  }, [screen]);
+  const { state, changeScreen, addCoins, purchaseTheme, setActiveTheme } = useApp();
 
   function getCurrentScreen() {
-    switch (screen) {
+    switch (state.screen) {
       case 'menu':
-        return <Menu onPlay={() => setScreen('game')} />;
+        return <Menu onPlay={() => changeScreen('game')} />;
       case 'game':
-        return <Game />;
-      // case 'settings':
-      //   return <Settings />;
-      // case 'store':
-      //   return <Store />;
-      // case 'leaderboard':
-      //   return <LeaderBoard />;
+        return <Game onWin={addCoins} />;
     }
   }
 
