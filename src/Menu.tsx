@@ -1,6 +1,6 @@
 interface MenuProps {
   onPlay: () => void;
-  onOpenStore?: () => void;
+  onOpenStore: () => void;
   onOpenSettings?: () => void;
 }
 

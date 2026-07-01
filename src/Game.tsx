@@ -1,12 +1,15 @@
+import { GAME_DIFFICULTIES } from './consts/consts';
 import { useGameSession } from './hooks/useGameSession';
-import { GAME_DIFFICULTIES, type GameDifficultyType } from './types/types';
+import { type GameDifficultyType, type GameThemesType } from './types/types';
 import { formatTime } from './utils/formatTime';
 
 interface GameProps {
+  theme: GameThemesType;
+  onBack: () => void;
   onWin: (coins: number) => void;
 }
-export const Game = ({ onWin }: GameProps) => {
-  const { state, cardClick, startGame, clear } = useGameSession(onWin);
+export const Game = ({ theme, onWin }: GameProps) => {
+  const { state, cardClick, startGame, clear } = useGameSession(theme, onWin);
   const { firstCard, secondCard } = state.selectedCards;
 
   const isIdle = state.status === 'idle';

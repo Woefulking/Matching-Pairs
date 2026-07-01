@@ -1,7 +1,7 @@
-import type { cardType } from './App';
+import type { CardType } from '../types/types';
 
-export const generateGameDeck = (cardsArray: cardType[], count: number) => {
-  const copy = [...cardsArray];
+export const generateGameDeck = (cards: ReadonlyArray<CardType>, count: number) => {
+  const copy = [...cards];
 
   for (let i = 0; i < count; i++) {
     const randomIndex = Math.floor(Math.random() * (copy.length - i)) + i;
@@ -9,7 +9,7 @@ export const generateGameDeck = (cardsArray: cardType[], count: number) => {
   }
 
   const uniqueCards = copy.slice(0, count);
-  const rawDeck = [...uniqueCards, ...structuredClone(uniqueCards)];
+  const rawDeck = [...uniqueCards, ...uniqueCards.map((card) => ({ ...card }))];
 
   const gameDeck = rawDeck.map((card, index) => ({
     ...card,

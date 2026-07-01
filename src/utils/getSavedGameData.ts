@@ -3,7 +3,7 @@ import { type GameSessionState } from '../types/types';
 
 export const getSavedState = (): GameSessionState => {
   try {
-    const savedState = localStorage.getItem('savedState');
+    const savedState = localStorage.getItem('savedGameState');
 
     if (!savedState) {
       return initialState;

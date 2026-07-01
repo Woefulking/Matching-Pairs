@@ -1,14 +1,14 @@
 import { useEffect, useReducer } from 'react';
 import {
-  GAME_DIFFICULTIES,
   type CardType,
   type GameDifficultyType,
   type GameSessionActions,
   type GameSessionState,
+  type GameThemesType,
 } from '../types/types';
 import { getSavedState } from '../utils/getSavedGameData';
 import { generateGameDeck } from '../utils/generateDeck';
-import { allCards } from '../App';
+import { GAME_DIFFICULTIES, GAME_THEMES } from '../consts/consts';
 
 export const initialState: GameSessionState = {
   status: 'idle',
@@ -104,11 +104,11 @@ export function GameSessionReducer(
   }
 }
 
-export function useGameSession(onWin: (coins: number) => void) {
+export function useGameSession(theme: GameThemesType, onWin: (coins: number) => void) {
   const [state, dispatch] = useReducer(GameSessionReducer, initialState, getSavedState);
 
   const startGame = (difficulty: GameDifficultyType) => {
-    const deck = generateGameDeck(allCards, 4);
+    const deck = generateGameDeck(GAME_THEMES[theme].cards, 4);
     dispatch({ type: 'startGame', payload: { deck, difficulty } });
   };
 
@@ -153,7 +153,7 @@ export function useGameSession(onWin: (coins: number) => void) {
   //Сохранение данных в localStorage
   useEffect(() => {
     localStorage.setItem(
-      'savedState',
+      'savedGameState',
       JSON.stringify({
         ...state,
         matchedCards: [...state.matchedCards],

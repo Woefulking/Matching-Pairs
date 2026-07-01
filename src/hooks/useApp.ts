@@ -1,17 +1,19 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import {
-  GAME_THEMES,
   type AppActions,
   type AppState,
   type GameThemesType,
   type ScreenType,
 } from '../types/types';
+import { getSavedAppData } from '../utils/getSavedAppData';
+import { GAME_THEMES } from '../consts/consts';
 
 export const initialState: AppState = {
   screen: 'menu',
-  coins: 0,
-  purchasedThemes: ['fruits'],
-  activeTheme: 'fruits',
+  coins: 500,
+  purchasedThemes: new Set<GameThemesType>(['fruits']),
+  activeTheme: 'space',
+  volume: 70,
 };
 
 export function AppReducer(state: AppState, action: AppActions): AppState {
@@ -40,15 +42,17 @@ export function AppReducer(state: AppState, action: AppActions): AppState {
     case 'purchaseTheme': {
       const themeToPurchase = action.payload;
 
-      if (state.purchasedThemes.includes(themeToPurchase)) return state;
+      if (state.purchasedThemes.has(themeToPurchase)) return state;
 
       const themePrice = GAME_THEMES[themeToPurchase]['price'];
       if (state.coins >= themePrice) {
         const newCoins = state.coins - themePrice;
+        const newPurchasedThemes = new Set<GameThemesType>(state.purchasedThemes);
+        newPurchasedThemes.add(themeToPurchase);
         return {
           ...state,
           coins: newCoins,
-          purchasedThemes: [...state.purchasedThemes, themeToPurchase],
+          purchasedThemes: newPurchasedThemes,
           activeTheme: themeToPurchase,
         };
       }
@@ -62,7 +66,7 @@ export function AppReducer(state: AppState, action: AppActions): AppState {
 }
 
 export function useApp() {
-  const [state, dispatch] = useReducer(AppReducer, initialState);
+  const [state, dispatch] = useReducer(AppReducer, initialState, getSavedAppData);
 
   const changeScreen = (screen: ScreenType) => {
     dispatch({ type: 'changeScreen', payload: screen });
@@ -79,6 +83,16 @@ export function useApp() {
   const setActiveTheme = (theme: GameThemesType) => {
     dispatch({ type: 'setActiveTheme', payload: theme });
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      'savedAppState',
+      JSON.stringify({
+        ...state,
+        purchasedThemes: [...state.purchasedThemes],
+      })
+    );
+  }, [state]);
 
   return { state, changeScreen, addCoins, purchaseTheme, setActiveTheme };
 }
