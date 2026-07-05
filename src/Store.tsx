@@ -16,9 +16,11 @@ export const Store = ({ purchadesThemes, onBack, onBuy }: StoreProps) => {
           <div key={theme}>
             <span>{params.label}</span>
             <span>{params.preview}</span>
-            <span>{params.price}</span>
             {!isThemePurchased ? (
-              <button onClick={() => onBuy(theme as GameThemesType)}>Купить Тему</button>
+              <>
+                <span>{params.price}</span>
+                <button onClick={() => onBuy(theme as GameThemesType)}>Купить Тему</button>
+              </>
             ) : (
               <span>Куплено</span>
             )}

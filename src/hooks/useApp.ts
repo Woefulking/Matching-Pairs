@@ -12,7 +12,7 @@ export const initialState: AppState = {
   screen: 'menu',
   coins: 500,
   purchasedThemes: new Set<GameThemesType>(['fruits']),
-  activeTheme: 'space',
+  activeTheme: 'ocean',
   volume: 70,
 };
 

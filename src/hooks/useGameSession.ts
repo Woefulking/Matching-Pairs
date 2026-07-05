@@ -108,7 +108,10 @@ export function useGameSession(theme: GameThemesType, onWin: (coins: number) => 
   const [state, dispatch] = useReducer(GameSessionReducer, initialState, getSavedState);
 
   const startGame = (difficulty: GameDifficultyType) => {
-    const deck = generateGameDeck(GAME_THEMES[theme].cards, 4);
+    const deck = generateGameDeck(
+      GAME_THEMES[theme].cards,
+      GAME_DIFFICULTIES[difficulty].pairsCount
+    );
     dispatch({ type: 'startGame', payload: { deck, difficulty } });
   };
 
