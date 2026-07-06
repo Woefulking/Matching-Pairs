@@ -26,8 +26,8 @@ export const GAME_THEMES = {
     label: 'Fruits',
     preview: 'Прикольные фрукты',
     price: 0,
-    faceup: './src/assets/themes/ocean/faceup.png',
-    facedown: './src/assets/themes/ocean/facedown.png',
+    frontImage: './src/assets/themes/ocean/frontImage.png',
+    backImage: './src/assets/themes/ocean/backImage.png',
     cards: [
       { id: 1, img: '🍎', name: 'apple' },
       { id: 2, img: '🍌', name: 'banana' },
@@ -42,8 +42,8 @@ export const GAME_THEMES = {
     label: 'Space',
     preview: 'Космос',
     price: 90,
-    faceup: './src/assets/themes/ocean/faceup.png',
-    facedown: './src/assets/themes/ocean/facedown.png',
+    frontImage: './src/assets/themes/ocean/frontImage.png',
+    backImage: './src/assets/themes/ocean/backImage.png',
     cards: [
       { id: 1, img: '1', name: 'apple' },
       { id: 2, img: '2', name: 'banana' },
@@ -58,8 +58,8 @@ export const GAME_THEMES = {
     label: 'Ocean',
     preview: 'Рыбы',
     price: 120,
-    faceup: './src/assets/themes/ocean/faceup.png',
-    facedown: './src/assets/themes/ocean/facedown.png',
+    frontImage: './src/assets/themes/ocean/frontImage.png',
+    backImage: './src/assets/themes/ocean/backImage.png',
     cards: [
       { id: 1, img: './src/assets/themes/ocean/clamp.png', name: 'clamp' },
       { id: 2, img: './src/assets/themes/ocean/clown.png', name: 'clown' },

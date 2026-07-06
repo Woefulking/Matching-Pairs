@@ -1,4 +1,4 @@
-import { initialState } from '../hooks/useGameSession';
+import { initialState } from '../reducers/gameSessionReducer';
 import { type GameSessionState } from '../types/types';
 
 export const getSavedState = (): GameSessionState => {

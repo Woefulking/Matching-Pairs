@@ -1,5 +1,5 @@
-import { initialState } from '../hooks/useApp';
-import type { AppState, GameThemesType } from '../types/types';
+import { initialState } from '../reducers/appReducer';
+import type { AppState, GameThemesType, ScreenType } from '../types/types';
 
 export const getSavedAppData = (): AppState => {
   try {
@@ -9,12 +9,18 @@ export const getSavedAppData = (): AppState => {
     const parsedState = JSON.parse(savedState) as Omit<AppState, 'purchasedThemes'> & {
       purchasedThemes: GameThemesType[];
     };
+
+    const path = window.location.pathname.replace('/', '');
+    const screen: ScreenType = ['menu', 'game', 'store'].includes(path)
+      ? (path as ScreenType)
+      : 'menu';
+
     return {
       ...parsedState,
+      screen,
       purchasedThemes: new Set(parsedState.purchasedThemes),
     };
   } catch {
-    console.log('1egfregerfgr');
     return initialState;
   }
 };
