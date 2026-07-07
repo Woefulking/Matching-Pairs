@@ -33,15 +33,15 @@ export function useGameSession(theme: GameThemesType, onWin: (coins: number) => 
   };
 
   //Таймер
-  // useEffect(() => {
-  //   if (state.status !== 'playing') return;
+  useEffect(() => {
+    if (state.status !== 'playing') return;
 
-  //   const timer = setInterval(() => {
-  //     dispatch({ type: 'tick' });
-  //   }, 1000);
+    const timer = setInterval(() => {
+      dispatch({ type: 'tick' });
+    }, 1000);
 
-  //   return () => clearInterval(timer);
-  // }, [state.status]);
+    return () => clearInterval(timer);
+  }, [state.status]);
 
   //Показ выбранных карточек и их сравнение
   useEffect(() => {

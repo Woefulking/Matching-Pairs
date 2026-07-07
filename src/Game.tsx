@@ -6,14 +6,16 @@ import { GAME_DIFFICULTIES, GAME_THEMES } from './consts/consts';
 import { useGameSession } from './hooks/useGameSession';
 import { type GameThemesType } from './types/types';
 import { shuffle } from './utils/shuffle';
+import type { SoundType } from './hooks/useAudio';
 
 interface GameProps {
   theme: GameThemesType;
   onBack: () => void;
   onWin: (coins: number) => void;
+  playSound: (sound: SoundType) => void;
 }
 
-export const Game = ({ theme, onBack, onWin }: GameProps) => {
+export const Game = ({ theme, onBack, onWin, playSound }: GameProps) => {
   const { state, cardClick, startRound, startPlaying, clear } = useGameSession(theme, onWin);
   const { firstCard, secondCard } = state.selectedCards;
 
@@ -31,22 +33,30 @@ export const Game = ({ theme, onBack, onWin }: GameProps) => {
 
     const deckCoords = deckRef.current.getBoundingClientRect();
     const cardsCoords = cardsRefs.current.map((card) => card?.getBoundingClientRect());
-    const order = shuffle(Array.from({ length: state.deck.length }, (_, index) => index));
 
     let maxDuration = 0;
 
-    order.forEach((targetIndex, i) => {
-      const card = cardsRefs.current[targetIndex];
-      const targetRect = cardsCoords[targetIndex];
-      if (!card || !targetRect) return;
+    const totalCards = state.deck.length;
+    for (let i = 0; i < totalCards; i++) {
+      const card = cardsRefs.current[i];
+      const targetRect = cardsCoords[i];
+      if (!card || !targetRect) continue;
+
+      const currentCardLayer = totalCards - 1 - i;
+
+      const deckCardOffsetTop = currentCardLayer * 5;
 
       const dx = deckCoords.left + deckCoords.width / 2 - (targetRect.left + targetRect.width / 2);
-      const dy = deckCoords.top + deckCoords.height / 2 - (targetRect.top + targetRect.height / 2);
+
+      const dy =
+        deckCardOffsetTop +
+        (deckCoords.top + deckCoords.height / 2) -
+        (targetRect.top + targetRect.height / 2);
 
       const delay = i * 120;
-
       maxDuration = Math.max(maxDuration, delay + 400);
 
+      card.style.zIndex = String(totalCards - i);
       card.animate(
         [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0, 0)' }],
         {
@@ -56,14 +66,14 @@ export const Game = ({ theme, onBack, onWin }: GameProps) => {
           fill: 'backwards',
         }
       );
-    });
+    }
 
     const timerId = setTimeout(() => {
       startPlaying();
     }, maxDuration);
 
     return () => clearTimeout(timerId);
-  }, [state.status, state.deck.length, startPlaying]);
+  }, [state.status, state.deck.length, startPlaying, playSound]);
 
   const handleBackToMenu = () => {
     clear();
@@ -82,23 +92,7 @@ export const Game = ({ theme, onBack, onWin }: GameProps) => {
             ref={deckRef}
             className="absolute top-1/2 left-0 -translate-y-1/2 aspect-5/7"
             style={{ width: GAME_DIFFICULTIES[state.difficulty].cardWidth }}
-          >
-            <div className="relative w-full h-full">
-              {Array.from({ length: Math.min(state.deck.length, 5) }).map((_, index) => (
-                <img
-                  key={index}
-                  className="pixelated absolute w-full h-full"
-                  style={{
-                    bottom: `${index * 10}px`,
-                    left: `${-index * 2}px`,
-                    zIndex: index,
-                  }}
-                  src={GAME_THEMES[theme].backImage}
-                  alt=""
-                />
-              ))}
-            </div>
-          </div>
+          ></div>
           <div className="flex flex-col gap-6">
             {/* <Timer timeLeft={state.timeLeft} /> */}
             <div
