@@ -17,10 +17,10 @@ export function GameSessionReducer(
   action: GameSessionActions
 ): GameSessionState {
   switch (action.type) {
-    case 'startGame': {
+    case 'startRound': {
       const { deck, difficulty } = action.payload;
       return {
-        status: 'playing',
+        status: 'dealing',
         difficulty,
         deck,
         pairsCount: new Set<string>(deck.map((card) => card.name)).size,
@@ -28,6 +28,12 @@ export function GameSessionReducer(
         matchedCards: new Set<string>(),
         timeLeft: GAME_DIFFICULTIES[difficulty].time,
         moves: 0,
+      };
+    }
+    case 'startPlaying': {
+      return {
+        ...state,
+        status: 'playing',
       };
     }
     case 'selectCard': {

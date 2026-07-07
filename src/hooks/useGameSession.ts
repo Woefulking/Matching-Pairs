@@ -8,12 +8,16 @@ import { GameSessionReducer, initialState } from '../reducers/gameSessionReducer
 export function useGameSession(theme: GameThemesType, onWin: (coins: number) => void) {
   const [state, dispatch] = useReducer(GameSessionReducer, initialState, getSavedState);
 
-  const startGame = (difficulty: GameDifficultyType) => {
+  const startRound = (difficulty: GameDifficultyType) => {
     const deck = generateGameDeck(
       GAME_THEMES[theme].cards,
       GAME_DIFFICULTIES[difficulty].pairsCount
     );
-    dispatch({ type: 'startGame', payload: { deck, difficulty } });
+    dispatch({ type: 'startRound', payload: { deck, difficulty } });
+  };
+
+  const startPlaying = () => {
+    dispatch({ type: 'startPlaying' });
   };
 
   const cardClick = (card: CardType) => {
@@ -72,5 +76,5 @@ export function useGameSession(theme: GameThemesType, onWin: (coins: number) => 
     onWin(coins);
   }, [state.status, state.difficulty, onWin]);
 
-  return { state, startGame, cardClick, clear };
+  return { state, startRound, startPlaying, cardClick, clear };
 }

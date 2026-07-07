@@ -5,18 +5,24 @@ export const GAME_DIFFICULTIES = {
     time: 90,
     pairsCount: 4,
     coins: 30,
+    columns: 4,
+    cardWidth: '180px',
   },
   medium: {
     label: 'Medium',
     time: 60,
     pairsCount: 6,
     coins: 60,
+    columns: 4,
+    cardWidth: '150px',
   },
   hard: {
     label: 'Hard',
     time: 30,
     pairsCount: 8,
     coins: 90,
+    columns: 4,
+    cardWidth: '130px',
   },
 } as const;
 

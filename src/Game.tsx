@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Card } from './components/card';
+import { useLayoutEffect, useRef } from 'react';
+import { Card } from './components/Card';
 import { DifficultySelection } from './components/DifficultySelection';
 import { Timer } from './components/Timer';
 import { GAME_DIFFICULTIES, GAME_THEMES } from './consts/consts';
@@ -13,13 +13,8 @@ interface GameProps {
   onWin: (coins: number) => void;
 }
 
-interface Test {
-  id: number;
-  dx: number;
-  dy: number;
-}
 export const Game = ({ theme, onBack, onWin }: GameProps) => {
-  const { state, cardClick, startGame, clear } = useGameSession(theme, onWin);
+  const { state, cardClick, startRound, startPlaying, clear } = useGameSession(theme, onWin);
   const { firstCard, secondCard } = state.selectedCards;
 
   const isIdle = state.status === 'idle';
@@ -28,69 +23,130 @@ export const Game = ({ theme, onBack, onWin }: GameProps) => {
 
   const deckRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
+  const cardsRefs = useRef<HTMLButtonElement[]>([]);
 
-  const deckRectRef = useRef<DOMRect | null>(null);
-  const childCoordsRef = useRef<DOMRect[]>([]);
+  useLayoutEffect(() => {
+    if (state.status !== 'dealing') return;
+    if (!boardRef.current || !deckRef.current) return;
 
-  const diffCoordsRef = useRef<Test[]>([]);
+    const deckCoords = deckRef.current.getBoundingClientRect();
+    const cardsCoords = cardsRefs.current.map((card) => card?.getBoundingClientRect());
+    const order = shuffle(Array.from({ length: state.deck.length }, (_, index) => index));
 
-  useEffect(() => {
-    if (!boardRef.current) return;
-    if (!deckRef.current) return;
+    let maxDuration = 0;
 
-    deckRectRef.current = deckRef.current.getBoundingClientRect();
-    childCoordsRef.current = Array.from(boardRef.current.children).map((child) =>
-      child.getBoundingClientRect()
-    );
+    order.forEach((targetIndex, i) => {
+      const card = cardsRefs.current[targetIndex];
+      const targetRect = cardsCoords[targetIndex];
+      if (!card || !targetRect) return;
 
-    console.log(deckRectRef.current);
-    console.log(childCoordsRef.current);
-  }, []);
+      const dx = deckCoords.left + deckCoords.width / 2 - (targetRect.left + targetRect.width / 2);
+      const dy = deckCoords.top + deckCoords.height / 2 - (targetRect.top + targetRect.height / 2);
 
-  const order = shuffle(Array.from({ length: state.deck.length }, (_, index) => index));
-  console.log(order);
+      const delay = i * 120;
 
-  useEffect(() => {
-    if (!deckRectRef.current) return;
-    const deckCoords = { top: deckRectRef.current?.top, left: deckRectRef.current?.left };
-    childCoordsRef.current.forEach((child, index) => {
-      diffCoordsRef.current.push({
-        id: index,
-        dx: child.left - deckCoords.left,
-        dy: child.top - deckCoords.top,
-      });
+      maxDuration = Math.max(maxDuration, delay + 400);
+
+      card.animate(
+        [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0, 0)' }],
+        {
+          duration: 400,
+          delay: delay,
+          easing: 'ease-out',
+          fill: 'backwards',
+        }
+      );
     });
 
-    console.log(diffCoordsRef);
-  });
+    const timerId = setTimeout(() => {
+      startPlaying();
+    }, maxDuration);
+
+    return () => clearTimeout(timerId);
+  }, [state.status, state.deck.length, startPlaying]);
 
   const handleBackToMenu = () => {
     clear();
     onBack();
   };
   return (
-    <>
+    <div className="relative w-full">
       <button className="w-12 h-12" type="button" onClick={() => handleBackToMenu()}>
         Назад
       </button>
       {isIdle ? (
-        <DifficultySelection onStartGame={startGame} />
+        <DifficultySelection onStartRound={startRound} />
       ) : (
-        <div className="flex flex-row gap-24">
-          <div className="" ref={deckRef}>
-            <img src={GAME_THEMES[theme].backImage} className="pixelated w-50 h-70" alt="" />
+        <div className="flex justify-center gap-4">
+          <div
+            ref={deckRef}
+            className="absolute top-1/2 left-0 -translate-y-1/2 aspect-5/7"
+            style={{ width: GAME_DIFFICULTIES[state.difficulty].cardWidth }}
+          >
+            <div className="relative w-full h-full">
+              {Array.from({ length: Math.min(state.deck.length, 5) }).map((_, index) => (
+                <img
+                  key={index}
+                  className="pixelated absolute w-full h-full"
+                  style={{
+                    bottom: `${index * 10}px`,
+                    left: `${-index * 2}px`,
+                    zIndex: index,
+                  }}
+                  src={GAME_THEMES[theme].backImage}
+                  alt=""
+                />
+              ))}
+            </div>
           </div>
           <div className="flex flex-col gap-6">
-            <div className="flex flex-row justify-center items-baseline gap-6">
+            {/* <Timer timeLeft={state.timeLeft} /> */}
+            <div
+              ref={boardRef}
+              className="grid gap-4"
+              style={{
+                gridTemplateColumns: `repeat(${GAME_DIFFICULTIES[state.difficulty].columns}, ${GAME_DIFFICULTIES[state.difficulty].cardWidth})`,
+              }}
+            >
+              {state.deck.map((card, index) => {
+                const isSelected =
+                  firstCard?.uniqueId === card.uniqueId || secondCard?.uniqueId === card.uniqueId;
+                const isMatched = state.matchedCards.has(card.name);
+                const isOpened = isSelected || isMatched || isLoose;
+
+                return (
+                  <Card
+                    ref={(el) => {
+                      if (el) cardsRefs.current[index] = el;
+                    }}
+                    key={index}
+                    image={card.img}
+                    frontImage={GAME_THEMES[theme].frontImage}
+                    backImage={GAME_THEMES[theme].backImage}
+                    isOpened={isOpened}
+                    onClick={() => cardClick(card)}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+{
+  /* <>
               <Timer timeLeft={state.timeLeft} />
               {!isPlaying && (
-                <div className="flex flex-row items-center gap-6">
-                  <div className="flex flex-col justify-center">
+                <div className="">
+                  <div className="">
                     <span className="text-[100px]">
                       You {state.status === 'win' ? 'win' : 'lose'}
                     </span>
                     {!isLoose && (
-                      <div className="flex flex-row gap-2 items-center justify-center">
+                      <div className="">
                         <span className="text-[36px]">{`+${GAME_DIFFICULTIES[state.difficulty].coins}`}</span>
                         <img src="./src/assets/coin.png" className="pixelated w-8 h-8" />
                       </div>
@@ -105,33 +161,5 @@ export const Game = ({ theme, onBack, onWin }: GameProps) => {
                   </button>
                 </div>
               )}
-            </div>
-            <div
-              ref={boardRef}
-              className={`grid grid-cols-[repeat(${GAME_DIFFICULTIES[state.difficulty].pairsCount},200px)] gap-4`}
-            >
-              {state.deck.map((card, index) => {
-                const isSelected =
-                  firstCard?.uniqueId === card.uniqueId || secondCard?.uniqueId === card.uniqueId;
-                const isMatched = state.matchedCards.has(card.name);
-                const isOpened = isSelected || isMatched || isLoose;
-
-                return (
-                  <Card
-                    // transform={{ dx: diffCoordsRef[index].dx, dy: arr[index].dy }}
-                    key={index}
-                    image={card.img}
-                    frontImage={GAME_THEMES[theme].frontImage}
-                    backImage={GAME_THEMES[theme].backImage}
-                    isOpened={isOpened}
-                    onClick={() => cardClick(card)}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
+            </> */
+}
