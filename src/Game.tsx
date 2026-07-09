@@ -1,27 +1,33 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Card } from './components/Card';
 import { DifficultySelection } from './components/DifficultySelection';
 import { Timer } from './components/Timer';
 import { GAME_DIFFICULTIES, GAME_THEMES } from './consts/consts';
 import { useGameSession } from './hooks/useGameSession';
 import { type GameThemesType } from './types/types';
-import { shuffle } from './utils/shuffle';
-import type { SoundType } from './hooks/useAudio';
 
 interface GameProps {
   theme: GameThemesType;
+  coins: number;
   onBack: () => void;
   onWin: (coins: number) => void;
-  playSound: (sound: SoundType) => void;
 }
 
-export const Game = ({ theme, onBack, onWin, playSound }: GameProps) => {
-  const { state, cardClick, startRound, startPlaying, clear } = useGameSession(theme, onWin);
+export const Game = ({ theme, coins, onBack, onWin }: GameProps) => {
+  const { state, cardClick, startRound, setGameStatus, resolveTurn, collectReward, clear } =
+    useGameSession(theme, onWin);
   const { firstCard, secondCard } = state.selectedCards;
+
+  const diffuculty = GAME_DIFFICULTIES[state.difficulty];
+  const currentTheme = GAME_THEMES[theme];
 
   const isIdle = state.status === 'idle';
   const isPlaying = state.status === 'playing';
   const isLoose = state.status === 'loss';
+  const isWin = state.status === 'loss';
+  const isGameEnd = state.status === 'win' || state.status === 'loss';
+
+  const comparisonResult = state.comparisonResult;
 
   const deckRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -57,7 +63,7 @@ export const Game = ({ theme, onBack, onWin, playSound }: GameProps) => {
       maxDuration = Math.max(maxDuration, delay + 400);
 
       card.style.zIndex = String(totalCards - i);
-      card.animate(
+      const animation = card.animate(
         [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0, 0)' }],
         {
           duration: 400,
@@ -66,19 +72,44 @@ export const Game = ({ theme, onBack, onWin, playSound }: GameProps) => {
           fill: 'backwards',
         }
       );
+
+      if (i === totalCards - 1) {
+        animation.onfinish = () => {
+          setGameStatus('playing');
+        };
+      }
     }
 
-    const timerId = setTimeout(() => {
-      startPlaying();
-    }, maxDuration);
+    // const timerId = setTimeout(() => {
+    //   setGameStatus('playing');
+    // }, maxDuration);
 
-    return () => clearTimeout(timerId);
-  }, [state.status, state.deck.length, startPlaying, playSound]);
+    // return () => clearTimeout(timerId);
+  }, [state.status, state.deck.length, setGameStatus]);
 
   const handleBackToMenu = () => {
     clear();
     onBack();
   };
+
+  const [coinsUi, setCoinsUi] = useState(coins);
+  useEffect(() => {
+    if (coinsUi >= coins) return;
+
+    const timer = setInterval(() => {
+      setCoinsUi((prev) => {
+        if (prev >= coins) {
+          clearInterval(timer);
+          return prev;
+        }
+
+        return prev + 1;
+      });
+    }, 20);
+    collectReward();
+    return () => clearInterval(timer);
+  }, [coinsUi, coins, collectReward]);
+
   return (
     <div className="relative w-full">
       <button className="w-12 h-12" type="button" onClick={() => handleBackToMenu()}>
@@ -91,15 +122,30 @@ export const Game = ({ theme, onBack, onWin, playSound }: GameProps) => {
           <div
             ref={deckRef}
             className="absolute top-1/2 left-0 -translate-y-1/2 aspect-5/7"
-            style={{ width: GAME_DIFFICULTIES[state.difficulty].cardWidth }}
-          ></div>
-          <div className="flex flex-col gap-6">
-            {/* <Timer timeLeft={state.timeLeft} /> */}
+            style={{ width: diffuculty.cardWidth }}
+          />
+          <div className="w-full flex flex-row justify-center gap-12">
+            <div className="absolute top-1/2 left-0 -translate-y-1/2">
+              <div className="flex flex-col gap-2">
+                <Timer timeLeft={state.timeLeft} />
+                <span className="text-[36px]">Moves: {state.moves}</span>
+                <span className="text-[36px]">Pairs found: {state.matchedCards.size}</span>
+                <span className="text-[36px]">Coins: {coinsUi}</span>
+                <button
+                  className="button"
+                  type="button"
+                  onClick={() => startRound(state.difficulty)}
+                >
+                  Restart
+                </button>
+              </div>
+            </div>
+
             <div
               ref={boardRef}
               className="grid gap-4"
               style={{
-                gridTemplateColumns: `repeat(${GAME_DIFFICULTIES[state.difficulty].columns}, ${GAME_DIFFICULTIES[state.difficulty].cardWidth})`,
+                gridTemplateColumns: `repeat(${diffuculty.columns}, ${diffuculty.cardWidth})`,
               }}
             >
               {state.deck.map((card, index) => {
@@ -108,6 +154,15 @@ export const Game = ({ theme, onBack, onWin, playSound }: GameProps) => {
                 const isMatched = state.matchedCards.has(card.name);
                 const isOpened = isSelected || isMatched || isLoose;
 
+                const runMatchAnimation = comparisonResult === 'match' && isSelected;
+                const runMismatchAnimation = comparisonResult === 'mismatch' && isSelected;
+
+                const handleSecondCardOpened = () => {
+                  if (card.uniqueId === secondCard?.uniqueId) {
+                    resolveTurn();
+                  }
+                };
+
                 return (
                   <Card
                     ref={(el) => {
@@ -115,9 +170,12 @@ export const Game = ({ theme, onBack, onWin, playSound }: GameProps) => {
                     }}
                     key={index}
                     image={card.img}
-                    frontImage={GAME_THEMES[theme].frontImage}
-                    backImage={GAME_THEMES[theme].backImage}
+                    frontImage={currentTheme.frontImage}
+                    backImage={currentTheme.backImage}
                     isOpened={isOpened}
+                    runMatchAnimation={runMatchAnimation}
+                    runMismatchAnimation={runMismatchAnimation}
+                    onAnimationPhaseEnd={handleSecondCardOpened}
                     onClick={() => cardClick(card)}
                   />
                 );

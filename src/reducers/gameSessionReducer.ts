@@ -7,9 +7,11 @@ export const initialState: GameSessionState = {
   deck: [],
   pairsCount: 0,
   selectedCards: { firstCard: null, secondCard: null },
+  comparisonResult: null,
   matchedCards: new Set<string>(),
   timeLeft: 90,
   moves: 0,
+  rewardGiven: false,
 };
 
 export function GameSessionReducer(
@@ -25,15 +27,18 @@ export function GameSessionReducer(
         deck,
         pairsCount: new Set<string>(deck.map((card) => card.name)).size,
         selectedCards: { firstCard: null, secondCard: null },
+        comparisonResult: null,
         matchedCards: new Set<string>(),
         timeLeft: GAME_DIFFICULTIES[difficulty].time,
         moves: 0,
+        rewardGiven: false,
       };
     }
-    case 'startPlaying': {
+    case 'setGameStatus': {
+      const newStatus = action.payload;
       return {
         ...state,
-        status: 'playing',
+        status: newStatus,
       };
     }
     case 'selectCard': {
@@ -50,7 +55,10 @@ export function GameSessionReducer(
       if (!selectedCards.secondCard) {
         return {
           ...state,
+          status: 'compairing',
           selectedCards: { ...selectedCards, secondCard: card },
+          comparisonResult:
+            state.selectedCards.firstCard?.name === card.name ? 'match' : 'mismatch',
         };
       }
 
@@ -58,14 +66,14 @@ export function GameSessionReducer(
         ...state,
       };
     }
-    case 'compareCards': {
+    case 'resolveTurn': {
       const { firstCard, secondCard } = state.selectedCards;
-
+      const comparisonResult = state.comparisonResult;
       if (!firstCard || !secondCard) return state;
 
       const nextMoves = state.moves + 1;
 
-      if (firstCard.name === secondCard.name) {
+      if (comparisonResult === 'match') {
         const newMatched = new Set(state.matchedCards);
         newMatched.add(firstCard.name);
 
@@ -75,12 +83,25 @@ export function GameSessionReducer(
           ...state,
           status: isWin ? 'win' : 'playing',
           selectedCards: { firstCard: null, secondCard: null },
+          comparisonResult: null,
           matchedCards: newMatched,
           moves: nextMoves,
         };
       }
 
-      return { ...state, selectedCards: { firstCard: null, secondCard: null }, moves: nextMoves };
+      return {
+        ...state,
+        status: 'playing',
+        selectedCards: { firstCard: null, secondCard: null },
+        comparisonResult: null,
+        moves: nextMoves,
+      };
+    }
+    case 'collectReward': {
+      return {
+        ...state,
+        rewardGiven: true,
+      };
     }
     case 'tick': {
       if (state.status !== 'playing') return state;

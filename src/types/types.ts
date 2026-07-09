@@ -1,7 +1,16 @@
 import type { GAME_DIFFICULTIES, GAME_THEMES } from '../consts/consts';
 
 export type ScreenType = 'menu' | 'game' | 'settings' | 'store' | 'leaderboard';
-export type GameStatusType = 'idle' | 'dealing' | 'playing' | 'win' | 'loss';
+export type GameStatusType =
+  | 'idle'
+  | 'preparing'
+  | 'dealing'
+  | 'playing'
+  | 'compairing'
+  | 'win'
+  | 'loss';
+
+export type ComparisonResult = null | 'match' | 'mismatch';
 
 export type GameDifficultyType = keyof typeof GAME_DIFFICULTIES;
 
@@ -31,9 +40,11 @@ export interface GameSessionState {
     firstCard: CardType | null;
     secondCard: CardType | null;
   };
+  comparisonResult: ComparisonResult;
   matchedCards: Set<string>;
   timeLeft: number;
   moves: number;
+  rewardGiven: boolean;
 }
 
 export type GameSessionActions =
@@ -41,9 +52,10 @@ export type GameSessionActions =
       type: 'startRound';
       payload: { deck: CardType[]; difficulty: GameDifficultyType };
     }
-  | { type: 'startPlaying' }
+  | { type: 'setGameStatus'; payload: GameStatusType }
   | { type: 'selectCard'; payload: CardType }
-  | { type: 'compareCards' }
+  | { type: 'resolveTurn' }
+  | { type: 'collectReward' }
   | { type: 'tick' }
   | { type: 'clear' };
 

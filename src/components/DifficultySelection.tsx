@@ -8,6 +8,7 @@ interface DifficultySelectionProps {
 
 export const DifficultySelection = ({ onStartRound }: DifficultySelectionProps) => {
   const [difficulty, setDifficulty] = useState<GameDifficultyType | null>(null);
+
   const difficulties = Object.keys(GAME_DIFFICULTIES) as GameDifficultyType[];
   const difficutlyParams = difficulty && GAME_DIFFICULTIES[difficulty];
 

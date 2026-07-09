@@ -1,5 +1,10 @@
 import { useEffect, useReducer } from 'react';
-import { type CardType, type GameDifficultyType, type GameThemesType } from '../types/types';
+import {
+  type CardType,
+  type GameDifficultyType,
+  type GameStatusType,
+  type GameThemesType,
+} from '../types/types';
 import { getSavedState } from '../utils/getSavedGameData';
 import { generateGameDeck } from '../utils/generateDeck';
 import { GAME_DIFFICULTIES, GAME_THEMES } from '../consts/consts';
@@ -16,15 +21,25 @@ export function useGameSession(theme: GameThemesType, onWin: (coins: number) => 
     dispatch({ type: 'startRound', payload: { deck, difficulty } });
   };
 
-  const startPlaying = () => {
-    dispatch({ type: 'startPlaying' });
+  const setGameStatus = (status: GameStatusType) => {
+    dispatch({ type: 'setGameStatus', payload: status });
   };
 
   const cardClick = (card: CardType) => {
     if (state.status !== 'playing') return;
+    if (state.matchedCards.has(card.name)) return;
 
     if (state.selectedCards.firstCard && state.selectedCards.secondCard) return;
     dispatch({ type: 'selectCard', payload: card });
+  };
+
+  const resolveTurn = () => {
+    if (state.status !== 'compairing') return;
+    dispatch({ type: 'resolveTurn' });
+  };
+
+  const collectReward = () => {
+    dispatch({ type: 'collectReward' });
   };
 
   const clear = () => {
@@ -33,30 +48,15 @@ export function useGameSession(theme: GameThemesType, onWin: (coins: number) => 
   };
 
   //Таймер
-  useEffect(() => {
-    if (state.status !== 'playing') return;
+  // useEffect(() => {
+  //   if (state.status !== 'playing') return;
 
-    const timer = setInterval(() => {
-      dispatch({ type: 'tick' });
-    }, 1000);
+  //   const timer = setInterval(() => {
+  //     dispatch({ type: 'tick' });
+  //   }, 1000);
 
-    return () => clearInterval(timer);
-  }, [state.status]);
-
-  //Показ выбранных карточек и их сравнение
-  useEffect(() => {
-    const selectedCards = state.selectedCards;
-    const firstCard = selectedCards.firstCard;
-    const secondCard = selectedCards.secondCard;
-
-    if (!firstCard || !secondCard) return;
-
-    const timer = setTimeout(() => {
-      dispatch({ type: 'compareCards' });
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [state.selectedCards]);
+  //   return () => clearInterval(timer);
+  // }, [state.status]);
 
   //Сохранение данных в localStorage
   useEffect(() => {
@@ -72,9 +72,10 @@ export function useGameSession(theme: GameThemesType, onWin: (coins: number) => 
   //Отслеживание победы и добавление монет в этот момент
   useEffect(() => {
     if (state.status !== 'win') return;
+    if (state.rewardGiven) return;
     const coins = GAME_DIFFICULTIES[state.difficulty].coins;
     onWin(coins);
-  }, [state.status, state.difficulty, onWin]);
+  }, [state.status, state.difficulty, state.rewardGiven, onWin]);
 
-  return { state, startRound, startPlaying, cardClick, clear };
+  return { state, startRound, setGameStatus, cardClick, resolveTurn, collectReward, clear };
 }
