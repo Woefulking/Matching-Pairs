@@ -1,10 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { Card } from './components/Card';
 import { DifficultySelection } from './components/DifficultySelection';
-import { Timer } from './components/Timer';
 import { GAME_DIFFICULTIES, GAME_THEMES } from './consts/consts';
 import { useGameSession } from './hooks/useGameSession';
 import { type GameThemesType } from './types/types';
+import { GameHub } from './components/GameHub';
 
 interface GameProps {
   theme: GameThemesType;
@@ -92,27 +92,9 @@ export const Game = ({ theme, coins, onBack, onWin }: GameProps) => {
     onBack();
   };
 
-  const [coinsUi, setCoinsUi] = useState(coins);
-  useEffect(() => {
-    if (coinsUi >= coins) return;
-
-    const timer = setInterval(() => {
-      setCoinsUi((prev) => {
-        if (prev >= coins) {
-          clearInterval(timer);
-          return prev;
-        }
-
-        return prev + 1;
-      });
-    }, 20);
-    collectReward();
-    return () => clearInterval(timer);
-  }, [coinsUi, coins, collectReward]);
-
   return (
     <div className="relative w-full">
-      <button className="w-12 h-12" type="button" onClick={() => handleBackToMenu()}>
+      <button className="button w-12 h-12" type="button" onClick={() => handleBackToMenu()}>
         Назад
       </button>
       {isIdle ? (
@@ -121,26 +103,20 @@ export const Game = ({ theme, coins, onBack, onWin }: GameProps) => {
         <div className="flex justify-center gap-4">
           <div
             ref={deckRef}
-            className="absolute top-1/2 left-0 -translate-y-1/2 aspect-5/7"
+            className="absolute top-1/2 right-0 -translate-y-1/2 aspect-5/7"
             style={{ width: diffuculty.cardWidth }}
           />
-          <div className="w-full flex flex-row justify-center gap-12">
-            <div className="absolute top-1/2 left-0 -translate-y-1/2">
-              <div className="flex flex-col gap-2">
-                <Timer timeLeft={state.timeLeft} />
-                <span className="text-[36px]">Moves: {state.moves}</span>
-                <span className="text-[36px]">Pairs found: {state.matchedCards.size}</span>
-                <span className="text-[36px]">Coins: {coinsUi}</span>
-                <button
-                  className="button"
-                  type="button"
-                  onClick={() => startRound(state.difficulty)}
-                >
-                  Restart
-                </button>
-              </div>
-            </div>
-
+          <div className="w-full flex flex-row justify-center">
+            <GameHub
+              totalCoins={coins}
+              timeLeft={state.timeLeft}
+              moves={state.moves}
+              theme={theme}
+              pairsFound={state.matchedCards.size}
+              currentDifficulty={state.difficulty}
+              collectReward={() => collectReward()}
+              onRestart={() => startRound(state.difficulty)}
+            />
             <div
               ref={boardRef}
               className="grid gap-4"
@@ -187,31 +163,3 @@ export const Game = ({ theme, coins, onBack, onWin }: GameProps) => {
     </div>
   );
 };
-
-{
-  /* <>
-              <Timer timeLeft={state.timeLeft} />
-              {!isPlaying && (
-                <div className="">
-                  <div className="">
-                    <span className="text-[100px]">
-                      You {state.status === 'win' ? 'win' : 'lose'}
-                    </span>
-                    {!isLoose && (
-                      <div className="">
-                        <span className="text-[36px]">{`+${GAME_DIFFICULTIES[state.difficulty].coins}`}</span>
-                        <img src="./src/assets/coin.png" className="pixelated w-8 h-8" />
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    className="button"
-                    type="button"
-                    onClick={() => startGame(state.difficulty)}
-                  >
-                    Restart
-                  </button>
-                </div>
-              )}
-            </> */
-}

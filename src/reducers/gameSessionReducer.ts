@@ -53,9 +53,9 @@ export function GameSessionReducer(
       }
 
       if (!selectedCards.secondCard) {
+        if (card.uniqueId === selectedCards.firstCard.uniqueId) return state;
         return {
           ...state,
-          status: 'compairing',
           selectedCards: { ...selectedCards, secondCard: card },
           comparisonResult:
             state.selectedCards.firstCard?.name === card.name ? 'match' : 'mismatch',

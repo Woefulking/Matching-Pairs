@@ -7,6 +7,8 @@ function App() {
   const { state, changeScreen, addCoins, purchaseTheme, setActiveTheme } = useApp();
 
   //TODO
+  //Подумать над интерфейсом во время раунда
+  //Разделить Game на компоненты
   //Добавить звук клика по карте и звук раздачи карт
   //Сделать динамический фон
 

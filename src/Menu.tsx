@@ -43,7 +43,6 @@ export const Menu = (props: MenuProps) => {
           <img className="pixelated w-20" src="./src/assets/s.png"></img>
         </div>
       </div>
-      <img className="pixelated w-8" src="./src/assets/coin.png" alt="" />
       <div className="flex flex-col gap-4">
         <MenuButton onClick={onPlay}>Play</MenuButton>
         <MenuButton onClick={onOpenStore}>Store</MenuButton>

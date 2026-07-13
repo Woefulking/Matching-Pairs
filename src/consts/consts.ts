@@ -2,7 +2,7 @@
 export const GAME_DIFFICULTIES = {
   easy: {
     label: 'Easy',
-    time: 90,
+    time: 60,
     pairsCount: 4,
     coins: 30,
     columns: 4,
@@ -10,7 +10,7 @@ export const GAME_DIFFICULTIES = {
   },
   medium: {
     label: 'Medium',
-    time: 60,
+    time: 45,
     pairsCount: 6,
     coins: 60,
     columns: 4,
