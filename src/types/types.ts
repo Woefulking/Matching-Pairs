@@ -6,8 +6,22 @@ export type GameStatusType = 'idle' | 'preparing' | 'dealing' | 'playing' | 'win
 export type ComparisonResult = null | 'match' | 'mismatch';
 
 export type GameDifficultyType = keyof typeof GAME_DIFFICULTIES;
+export type GameDifficultySettings = (typeof GAME_DIFFICULTIES)[GameDifficultyType];
 
 export type GameThemesType = keyof typeof GAME_THEMES;
+export type GameThemesSettings = (typeof GAME_THEMES)[GameThemesType];
+
+export interface StatisticsInterface {
+  bestTime: number | null;
+  bestMoves: number | null;
+  totalWins: number;
+}
+
+export interface WinResultInterface {
+  difficulty: GameDifficultyType;
+  moves: number;
+  time: number;
+}
 
 export interface AppState {
   screen: ScreenType;
@@ -15,7 +29,22 @@ export interface AppState {
   purchasedThemes: Set<GameThemesType>;
   activeTheme: GameThemesType;
   volume: number;
+  statistics: Record<GameDifficultyType, StatisticsInterface>;
 }
+
+export type AppActions =
+  | { type: 'changeScreen'; payload: ScreenType }
+  | { type: 'addCoins'; payload: number }
+  | { type: 'purchaseTheme'; payload: GameThemesType }
+  | { type: 'setActiveTheme'; payload: GameThemesType }
+  | {
+      type: 'updateStatistics';
+      payload: {
+        difficulty: GameDifficultyType;
+        time: number;
+        moves: number;
+      };
+    };
 
 export interface CardType {
   id: number;
@@ -51,9 +80,3 @@ export type GameSessionActions =
   | { type: 'collectReward' }
   | { type: 'tick' }
   | { type: 'clear' };
-
-export type AppActions =
-  | { type: 'changeScreen'; payload: ScreenType }
-  | { type: 'addCoins'; payload: number }
-  | { type: 'purchaseTheme'; payload: GameThemesType }
-  | { type: 'setActiveTheme'; payload: GameThemesType };

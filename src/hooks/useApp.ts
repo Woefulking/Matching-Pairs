@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import { getSavedAppData } from '../utils/getSavedAppData';
-import type { GameThemesType, ScreenType } from '../types/types';
+import type { GameDifficultyType, GameThemesType, ScreenType } from '../types/types';
 import { AppReducer, initialState } from '../reducers/appReducer';
 
 export function useApp() {
@@ -12,6 +12,10 @@ export function useApp() {
 
   const addCoins = (coins: number) => {
     dispatch({ type: 'addCoins', payload: coins });
+  };
+
+  const updateStatistics = (difficulty: GameDifficultyType, time: number, moves: number) => {
+    dispatch({ type: 'updateStatistics', payload: { difficulty, time, moves } });
   };
 
   const purchaseTheme = (theme: GameThemesType) => {
@@ -55,5 +59,5 @@ export function useApp() {
     );
   }, [state]);
 
-  return { state, changeScreen, addCoins, purchaseTheme, setActiveTheme };
+  return { state, changeScreen, addCoins, updateStatistics, purchaseTheme, setActiveTheme };
 }

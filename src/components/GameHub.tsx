@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { GAME_THEMES } from '../consts/consts';
-import type { GameDifficultyType, GameThemesType } from '../types/types';
+import type { GameThemesType } from '../types/types';
 import { formatTime } from '../utils/formatTime';
 
 interface GameHubProps {
@@ -9,9 +9,7 @@ interface GameHubProps {
   moves: number;
   theme: GameThemesType;
   pairsFound: number;
-  currentDifficulty: GameDifficultyType;
-  collectReward: () => void;
-  onRestart: (difficulty: GameDifficultyType) => void;
+  onRestart: () => void;
 }
 export const GameHub = ({
   totalCoins,
@@ -19,16 +17,12 @@ export const GameHub = ({
   moves,
   theme,
   pairsFound,
-  currentDifficulty,
-  collectReward,
   onRestart,
 }: GameHubProps) => {
-  const [coinsUi, setCoinsUi] = useState(totalCoins);
+  const [coinsHud, setCoinsHud] = useState(totalCoins);
   useEffect(() => {
-    if (coinsUi >= totalCoins) return;
-
     const timer = setInterval(() => {
-      setCoinsUi((prev) => {
+      setCoinsHud((prev) => {
         if (prev >= totalCoins) {
           clearInterval(timer);
           return prev;
@@ -37,9 +31,9 @@ export const GameHub = ({
         return prev + 1;
       });
     }, 20);
-    collectReward();
+
     return () => clearInterval(timer);
-  }, [coinsUi, totalCoins, collectReward]);
+  }, [totalCoins]);
 
   const isTimerLow = timeLeft <= 15;
   return (
@@ -74,10 +68,10 @@ export const GameHub = ({
           <div className="min-w-18">
             <img className="pixelated w-12" src="./src/assets/coin.png" alt="" />
           </div>
-          <span className="text-[36px]">{coinsUi}</span>
+          <span className="text-[36px]">{coinsHud}</span>
         </div>
         {/* Restart */}
-        <button className="button" type="button" onClick={() => onRestart(currentDifficulty)}>
+        <button className="button" type="button" onClick={() => onRestart()}>
           Restart
         </button>
       </div>

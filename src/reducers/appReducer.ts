@@ -7,6 +7,11 @@ export const initialState: AppState = {
   purchasedThemes: new Set<GameThemesType>(['fruits']),
   activeTheme: 'ocean',
   volume: 70,
+  statistics: {
+    easy: { bestTime: null, bestMoves: null, totalWins: 0 },
+    medium: { bestTime: null, bestMoves: null, totalWins: 0 },
+    hard: { bestTime: null, bestMoves: null, totalWins: 0 },
+  },
 };
 
 export function AppReducer(state: AppState, action: AppActions): AppState {
@@ -51,6 +56,22 @@ export function AppReducer(state: AppState, action: AppActions): AppState {
       }
 
       return { ...state };
+    }
+    case 'updateStatistics': {
+      const { difficulty, time, moves } = action.payload;
+      const current = state.statistics[difficulty];
+
+      return {
+        ...state,
+        statistics: {
+          ...state.statistics,
+          [difficulty]: {
+            bestTime: current.bestTime === null ? time : Math.min(current.bestTime, time),
+            bestMoves: current.bestMoves === null ? moves : Math.min(current.bestMoves, moves),
+            totalWins: current.totalWins + 1,
+          },
+        },
+      };
     }
     default: {
       return state;

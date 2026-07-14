@@ -4,13 +4,14 @@ import {
   type GameDifficultyType,
   type GameStatusType,
   type GameThemesType,
+  type WinResultInterface,
 } from '../types/types';
 import { getSavedState } from '../utils/getSavedGameData';
 import { generateGameDeck } from '../utils/generateDeck';
 import { GAME_DIFFICULTIES, GAME_THEMES } from '../consts/consts';
 import { GameSessionReducer, initialState } from '../reducers/gameSessionReducer';
 
-export function useGameSession(theme: GameThemesType, onWin: (coins: number) => void) {
+export function useGameSession(theme: GameThemesType, onWin: (result: WinResultInterface) => void) {
   const [state, dispatch] = useReducer(GameSessionReducer, initialState, getSavedState);
 
   const startRound = (difficulty: GameDifficultyType) => {
@@ -73,9 +74,15 @@ export function useGameSession(theme: GameThemesType, onWin: (coins: number) => 
   useEffect(() => {
     if (state.status !== 'win') return;
     if (state.rewardGiven) return;
-    const coins = GAME_DIFFICULTIES[state.difficulty].coins;
-    onWin(coins);
-  }, [state.status, state.difficulty, state.rewardGiven, onWin]);
+
+    const elapsedTime = GAME_DIFFICULTIES[state.difficulty].time - state.timeLeft;
+    onWin({
+      difficulty: state.difficulty,
+      time: elapsedTime,
+      moves: state.moves,
+    });
+    collectReward();
+  }, [state.status, state.difficulty, state.rewardGiven, onWin, state.timeLeft, state.moves]);
 
   return { state, startRound, setGameStatus, cardClick, resolveTurn, collectReward, clear };
 }
