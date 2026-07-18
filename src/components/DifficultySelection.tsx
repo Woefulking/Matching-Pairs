@@ -13,8 +13,8 @@ export const DifficultySelection = ({ onStartRound }: DifficultySelectionProps) 
   const difficutlyParams = difficulty && GAME_DIFFICULTIES[difficulty];
 
   return (
-    <div className="flex flex-col items-center gap-4 min-h-100">
-      <div className="text-[86px]">Choose Difficulty</div>
+    <div className="flex flex-col items-center gap-4 min-h-50">
+      <div className="text-[86px] text-white">Choose Difficulty</div>
       <div className="flex flex-row gap-4">
         {difficulties.map((difficulty) => {
           const label = GAME_DIFFICULTIES[difficulty].label;
@@ -35,9 +35,9 @@ export const DifficultySelection = ({ onStartRound }: DifficultySelectionProps) 
       </div>
       {difficutlyParams && (
         <div className="grid grid-cols-[repeat(3,180px)] text-[24px] font-medium">
-          <span className="text-center">{`Timer: ${difficutlyParams.time} sec`}</span>
-          <span className="text-center">{`Total Cards: ${difficutlyParams.pairsCount * 2}`}</span>
-          <span className="text-center">{`Coins for win: ${difficutlyParams.coins}`}</span>
+          <span className="text-center text-white">{`Timer: ${difficutlyParams.time} sec`}</span>
+          <span className="text-center  text-white">{`Total Cards: ${difficutlyParams.pairsCount * 2}`}</span>
+          <span className="text-center  text-white">{`Coins for win: ${difficutlyParams.coins}`}</span>
         </div>
       )}
     </div>

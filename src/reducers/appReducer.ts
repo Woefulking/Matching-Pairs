@@ -5,7 +5,7 @@ export const initialState: AppState = {
   screen: 'menu',
   coins: 500,
   purchasedThemes: new Set<GameThemesType>(['fruits']),
-  activeTheme: 'ocean',
+  activeTheme: 'space',
   volume: 70,
   statistics: {
     easy: { bestTime: null, bestMoves: null, totalWins: 0 },

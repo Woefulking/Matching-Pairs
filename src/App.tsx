@@ -4,6 +4,8 @@ import { useApp } from './hooks/useApp';
 import { Store } from './Store';
 import type { WinResultInterface } from './types/types';
 import { GAME_DIFFICULTIES } from './consts/consts';
+import { Settings } from './Settings';
+import { AnimatedBackground } from './components/AnimatedBackground';
 
 function App() {
   const { state, changeScreen, addCoins, updateStatistics, purchaseTheme, setActiveTheme } =
@@ -11,9 +13,7 @@ function App() {
 
   //TODO
   //Подумать над интерфейсом во время раунда
-  //Разделить Game на компоненты
   //Добавить звук клика по карте и звук раздачи карт
-  //Сделать динамический фон
 
   const handleWin = (result: WinResultInterface) => {
     const coinsForWin = GAME_DIFFICULTIES[result.difficulty].coins;
@@ -25,7 +25,11 @@ function App() {
     switch (state.screen) {
       case 'menu':
         return (
-          <Menu onPlay={() => changeScreen('game')} onOpenStore={() => changeScreen('store')} />
+          <Menu
+            onPlay={() => changeScreen('game')}
+            onOpenStore={() => changeScreen('store')}
+            onOpenSettings={() => changeScreen('settings')}
+          />
         );
       case 'game':
         return (
@@ -44,10 +48,17 @@ function App() {
             onBuy={purchaseTheme}
           />
         );
+      case 'settings': {
+        return <Settings activeTheme={state.activeTheme} onChangeTheme={setActiveTheme} />;
+      }
     }
   }
 
-  return getCurrentScreen();
+  return (
+    <AnimatedBackground isCompact={state.screen !== 'menu'}>
+      {getCurrentScreen()}
+    </AnimatedBackground>
+  );
 }
 
 export default App;

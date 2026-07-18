@@ -37,8 +37,15 @@ export const GameHub = ({
 
   const isTimerLow = timeLeft <= 15;
   return (
-    <div className="absolute top-1/2 left-0 -translate-y-1/2">
-      <div className="flex flex-col gap-2">
+    <div
+      className="absolute top-1/2 left-0 -translate-y-1/2 pixelated py-2 px-3 text-white"
+      style={{
+        backgroundImage: `url(${GAME_THEMES[theme].frontImage})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'contain',
+      }}
+    >
+      <div className="flex flex-col gap-2 relative z-10">
         {/* Timer */}
         <div className="flex flex-row items-center gap-4 max-h-12">
           <div className="min-w-18">
@@ -71,7 +78,7 @@ export const GameHub = ({
           <span className="text-[36px]">{coinsHud}</span>
         </div>
         {/* Restart */}
-        <button className="button" type="button" onClick={() => onRestart()}>
+        <button className="button text-black" type="button" onClick={() => onRestart()}>
           Restart
         </button>
       </div>

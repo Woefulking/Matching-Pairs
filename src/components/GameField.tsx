@@ -100,7 +100,7 @@ export const GameField = ({
           ref={boardRef}
           className="grid gap-4"
           style={{
-            gridTemplateColumns: `repeat(${diffuculty.columns}, ${diffuculty.cardWidth})`,
+            gridTemplateColumns: `repeat(4, ${diffuculty.cardWidth})`,
           }}
         >
           {deck.map((card, index) => {

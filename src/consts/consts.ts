@@ -1,19 +1,17 @@
-//Параметры сложности
+//Difficulties params
 export const GAME_DIFFICULTIES = {
   easy: {
     label: 'Easy',
     time: 60,
     pairsCount: 4,
     coins: 30,
-    columns: 4,
-    cardWidth: '180px',
+    cardWidth: '160px',
   },
   medium: {
     label: 'Medium',
     time: 45,
     pairsCount: 6,
     coins: 60,
-    columns: 4,
     cardWidth: '150px',
   },
   hard: {
@@ -21,43 +19,62 @@ export const GAME_DIFFICULTIES = {
     time: 30,
     pairsCount: 8,
     coins: 90,
-    columns: 4,
     cardWidth: '130px',
   },
 } as const;
 
-//Игровые темы
+//Letters for logo
+export const LOGO_WORDS = [
+  [
+    './src/assets/letters/P.png',
+    './src/assets/letters/i.png',
+    './src/assets/letters/x.png',
+    './src/assets/letters/e.png',
+    './src/assets/letters/l.png',
+  ],
+  [
+    './src/assets/letters/P.png',
+    './src/assets/letters/a.png',
+    './src/assets/letters/i.png',
+    './src/assets/letters/r.png',
+    './src/assets/letters/s.png',
+  ],
+] as const;
+
+//Game Themes
 export const GAME_THEMES = {
   fruits: {
     label: 'Fruits',
     preview: 'Прикольные фрукты',
     price: 0,
-    frontImage: './src/assets/themes/ocean/frontImage.png',
-    backImage: './src/assets/themes/ocean/backImage.png',
+    frontImage: './src/assets/themes/fruits/frontImage.png',
+    backImage: './src/assets/themes/fruits/backImage.png',
     cards: [
-      { id: 1, img: '🍎', name: 'apple' },
-      { id: 2, img: '🍌', name: 'banana' },
-      { id: 3, img: '🍇', name: 'grape' },
-      { id: 4, img: '🍒', name: 'cherry' },
-      { id: 5, img: '🍓', name: 'strawberry' },
-      { id: 6, img: '🍉', name: 'watermelon' },
-      { id: 7, img: '🍊', name: 'orange' },
+      { id: 1, img: './src/assets/themes/fruits/apple.png', name: 'apple' },
+      { id: 2, img: './src/assets/themes/fruits/banana.png', name: 'banana' },
+      { id: 3, img: './src/assets/themes/fruits/cherry.png', name: 'cherry' },
+      { id: 4, img: './src/assets/themes/fruits/coconut.png', name: 'coconut' },
+      { id: 5, img: './src/assets/themes/fruits/grape.png', name: 'grape' },
+      { id: 6, img: './src/assets/themes/fruits/pear.png', name: 'pear' },
+      { id: 7, img: './src/assets/themes/fruits/pomegranate.png', name: 'pomegranate' },
+      { id: 8, img: './src/assets/themes/fruits/strawberry.png', name: 'strawberry' },
     ],
   },
   space: {
     label: 'Space',
     preview: 'Космос',
     price: 90,
-    frontImage: './src/assets/themes/ocean/frontImage.png',
-    backImage: './src/assets/themes/ocean/backImage.png',
+    frontImage: './src/assets/themes/space/frontImage.png',
+    backImage: './src/assets/themes/space/backImage.png',
     cards: [
-      { id: 1, img: '1', name: 'apple' },
-      { id: 2, img: '2', name: 'banana' },
-      { id: 3, img: '3', name: 'grape' },
-      { id: 4, img: '4', name: 'cherry' },
-      { id: 5, img: '5', name: 'strawberry' },
-      { id: 6, img: '6', name: 'watermelon' },
-      { id: 7, img: '7', name: 'orange' },
+      { id: 1, img: './src/assets/themes/space/ufo.png', name: 'ufo' },
+      { id: 2, img: './src/assets/themes/space/yellow.png', name: 'yellow' },
+      { id: 3, img: './src/assets/themes/space/blue.png', name: 'blue' },
+      { id: 4, img: './src/assets/themes/space/astronaut.png', name: 'astronaut' },
+      { id: 5, img: './src/assets/themes/space/alien.png', name: 'alien' },
+      { id: 6, img: './src/assets/themes/space/red.png', name: 'red' },
+      { id: 7, img: './src/assets/themes/space/black.png', name: 'black' },
+      { id: 8, img: './src/assets/themes/space/galaxy.png', name: 'galaxy' },
     ],
   },
   ocean: {

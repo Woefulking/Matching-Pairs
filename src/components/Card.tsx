@@ -49,7 +49,7 @@ export const Card = ({
         >
           <div className="absolute inset-0 w-full h-full transform-[rotateY(180deg)] backface-hidden flex items-center justify-center">
             <img src={frontImage} className="pixelated absolute inset-0 w-full h-full "></img>
-            <img className="pixelated w-24 z-10 inset-0" src={image} alt="" />
+            <img className="pixelated w-30 z-10 inset-0" src={image} alt="" />
           </div>
           <img src={backImage} className="pixelated w-full h-full inset-0 backface-hidden"></img>
         </div>

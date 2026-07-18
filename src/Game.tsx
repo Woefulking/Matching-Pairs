@@ -43,9 +43,13 @@ export const Game = ({ theme, coins, onBack, onWin }: GameProps) => {
   };
 
   return (
-    <div className="relative w-full">
-      <button className="button w-12 h-12" type="button" onClick={() => handleBackToMenu()}>
-        Назад
+    <>
+      <button
+        className="absolute top-[20%] left-0 translate-y-[-20%] button w-12 h-12"
+        type="button"
+        onClick={() => handleBackToMenu()}
+      >
+        Back
       </button>
       {isIdle ? (
         <DifficultySelection onStartRound={startRound} />
@@ -75,6 +79,6 @@ export const Game = ({ theme, coins, onBack, onWin }: GameProps) => {
           />
         </div>
       )}
-    </div>
+    </>
   );
 };
