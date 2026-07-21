@@ -45,11 +45,16 @@ export const Game = ({ theme, coins, onBack, onWin }: GameProps) => {
   return (
     <>
       <button
-        className="absolute top-[20%] left-0 translate-y-[-20%] button w-12 h-12"
+        className="transparent absolute top-4 md:top-4 xl:top-40 left-4 flex items-center justify-center
+         min-w-0 w-10 h-12 md:w-14 md:h-14 p-0
+         transition duration-500 ease-in-out lg:hover:scale-110 active:scale-95"
         type="button"
-        onClick={() => handleBackToMenu()}
+        onClick={handleBackToMenu}
       >
-        Back
+        <img
+          src="./src/assets/arrow.png"
+          className="pixelated w-full h-full md:h-auto object-contain"
+        />
       </button>
       {isIdle ? (
         <DifficultySelection onStartRound={startRound} />

@@ -1,15 +1,15 @@
-import { GAME_THEMES, LOGO_WORDS } from '../consts/consts';
+import { ALL_BACK_IMAGES, LOGO_WORDS } from '../consts/consts';
 import { LogoCard } from './LogoCard';
-
-const ALL_IMAGES = Object.values(GAME_THEMES).map((theme) => theme.backImage);
 
 export const Logo = () => {
   return (
-    <div className="flex flex-row gap-12 items-center">
+    <div className="flex flex-row gap-4 md:gap-4 lg:gap-6 xl:gap-10 items-center justify-center w-full">
       {LOGO_WORDS.map((word, index) => (
-        <div key={index} className="flex flex-row gap-2">
+        <div key={index} className="flex flex-row gap-1 md:gap-1.5 lg:gap-2">
           {word.map((letter, letterIndex) => (
-            <LogoCard key={letterIndex} letter={letter} allImages={ALL_IMAGES} />
+            <div key={letterIndex} className="w-14 md:w-16 lg:w-22 xl:w-28 2xl:w-32">
+              <LogoCard letter={letter} allImages={ALL_BACK_IMAGES} />
+            </div>
           ))}
         </div>
       ))}

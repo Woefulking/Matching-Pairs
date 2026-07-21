@@ -36,21 +36,38 @@
   }
 
   .button {
-    min-width: 160px;
-    background-color: white;
-    border-width: 4px;
-    border-color: black;
-    border-radius: 4px;
-    padding: 4px 0;
-    font-size: 36px;
-    font-weight: 500;
+    min-width: 140px;
+    padding: 0.25rem 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
 
-    transition-duration: 300ms;
+    color: #ffffff;
+    background-color: rgba(15, 23, 42, 0.7);
+    border: 3px solid #38bdf8;
+    border-radius: 4px;
+
+    transition-property: all;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
   }
 
   .button:hover {
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 1);
+    background-color: #38bdf8;
+    color: #0f172a;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+    transform: translateY(-2px);
+  }
 
+  .button:active {
+    transform: translateY(0);
+    box-shadow: 0 0 5px rgba(56, 189, 248, 0.8);
+  }
+
+  .transparent {
+    background: none;
+    border: none;
   }
 
   .jumping {
@@ -122,7 +139,7 @@
 
   @keyframes floatDiagonal {
     0% {
-      transform: translateY(0) translateX(0);
+      transform: translateY(0) translateX(0) rotate(45deg);
     }
 
     100% {

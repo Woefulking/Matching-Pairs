@@ -9,16 +9,25 @@ interface MenuProps {
 export const Menu = (props: MenuProps) => {
   const { onPlay, onOpenStore, onOpenSettings } = props;
   return (
-    <div className="flex flex-col items-center gap-15">
+    <div className="flex flex-col items-center gap-8 md:gap-12 xl:gap-16">
       <Logo />
-      <div className="flex flex-col gap-4">
-        <button className="button" onClick={onPlay}>
+      <div className="flex flex-col gap-3 lg:gap-4 w-full items-center">
+        <button
+          className="button sm:min-w-30 md:min-w-36 lg:min-w-50 xl:min-w-62 2xl:min-w-70 md:text-2xl lg:text-3xl xl:text-[36px]"
+          onClick={onPlay}
+        >
           Play
         </button>
-        <button className="button" onClick={onOpenStore}>
+        <button
+          className="button sm:min-w-30 md:min-w-36 lg:min-w-50 xl:min-w-62 2xl:min-w-70 md:text-2xl lg:text-3xl xl:text-[36px]"
+          onClick={onOpenStore}
+        >
           Store
         </button>
-        <button className="button" onClick={onOpenSettings}>
+        <button
+          className="button sm:min-w-30 md:min-w-36 lg:min-w-50 xl:min-w-62 2xl:min-w-70 md:text-2xl lg:text-3xl xl:text-[36px]"
+          onClick={onOpenSettings}
+        >
           Settings
         </button>
       </div>
