@@ -92,10 +92,10 @@ export const GameField = ({
     <>
       <div
         ref={deckRef}
-        className="absolute top-1/2 right-0 -translate-y-1/2 aspect-5/7"
+        className="absolute top-1/2 right-0 aspect-5/7 -translate-y-1/2"
         style={{ width: diffuculty.cardWidth }}
       />
-      <div className="w-full flex flex-row justify-center">
+      <div className="flex w-full flex-row justify-center">
         <div
           ref={boardRef}
           className="grid gap-4"

@@ -38,16 +38,16 @@ export const GameHub = ({
   const isTimerLow = timeLeft <= 15;
   return (
     <div
-      className="absolute top-1/2 left-0 -translate-y-1/2 pixelated py-2 px-3 text-white"
+      className="pixelated absolute top-1/2 left-0 -translate-y-1/2 px-3 py-2 text-white"
       style={{
         backgroundImage: `url(${GAME_THEMES[theme].frontImage})`,
         backgroundPosition: 'center',
         backgroundSize: 'contain',
       }}
     >
-      <div className="flex flex-col gap-2 relative z-10">
+      <div className="relative z-10 flex flex-col gap-2">
         {/* Timer */}
-        <div className="flex flex-row items-center gap-4 max-h-12">
+        <div className="flex max-h-12 flex-row items-center gap-4">
           <div className="min-w-18">
             <img className="pixelated w-10" src="./src/assets/sandClock.png" alt="" />
           </div>
@@ -56,22 +56,22 @@ export const GameHub = ({
           </span>
         </div>
         {/* Moves Count */}
-        <div className="flex flex-row items-center gap-4 max-h-12">
+        <div className="flex max-h-12 flex-row items-center gap-4">
           <div className="min-w-18">
             <img className="pixelated w-10" src="./src/assets/moves.png" alt="" />
           </div>
           <span className="text-[36px]">{moves}</span>
         </div>
         {/* Found Pairs Count */}
-        <div className="flex flex-row items-center gap-4 max-h-12">
-          <div className="flex flex-row items-center gap-1 min-w-18">
+        <div className="flex max-h-12 flex-row items-center gap-4">
+          <div className="flex min-w-18 flex-row items-center gap-1">
             <img className="pixelated w-8" src={GAME_THEMES[theme].backImage} alt="" />
             <img className="pixelated w-8" src={GAME_THEMES[theme].backImage} alt="" />
           </div>
           <span className="text-[36px]">{pairsFound}</span>
         </div>
         {/* Total Coins */}
-        <div className="flex flex-row items-center gap-4 max-h-12">
+        <div className="flex max-h-12 flex-row items-center gap-4">
           <div className="min-w-18">
             <img className="pixelated w-12" src="./src/assets/coin.png" alt="" />
           </div>

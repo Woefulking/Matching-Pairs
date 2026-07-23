@@ -32,16 +32,16 @@ export const LogoCard = ({ letter, allImages }: LogoCardProps) => {
   };
 
   return (
-    <div className="w-full aspect-5/7 perspective-distant group">
+    <div className="group aspect-5/7 w-full perspective-distant">
       <div
         onTransitionEnd={handleTransitionEnd}
-        className={`w-full h-full relative transition-transform duration-300 transform-3d ${isOpen && 'transform-[rotateY(180deg)]'}`}
+        className={`relative h-full w-full transition-transform duration-300 transform-3d ${isOpen && 'transform-[rotateY(180deg)]'}`}
       >
-        <div className="absolute inset-0 w-full h-full transform-[rotateY(180deg)] backface-hidden flex items-center justify-center">
-          <img src={frontImage} className="pixelated absolute inset-0 w-full h-full "></img>
-          <img className="pixelated w-[80%] z-10 inset-0" src={letter} alt="" />
+        <div className="absolute inset-0 flex h-full w-full transform-[rotateY(180deg)] items-center justify-center backface-hidden">
+          <img src={frontImage} className="pixelated absolute inset-0 h-full w-full"></img>
+          <img className="pixelated inset-0 z-10 w-[80%]" src={letter} alt="" />
         </div>
-        <img src={backImage} className="pixelated w-full h-full inset-0 backface-hidden"></img>
+        <img src={backImage} className="pixelated inset-0 h-full w-full backface-hidden"></img>
       </div>
     </div>
   );

@@ -8,14 +8,14 @@ interface AnimatedBackgroundProps {
 
 export const AnimatedBackground = ({ children, isCompact }: AnimatedBackgroundProps) => {
   return (
-    <div className="fixed inset-0 overflow-hidden bg-slate-900 z-0 select-none">
-      <div className="absolute inset-0 pointer-events-none">
+    <div className="fixed inset-0 z-0 overflow-hidden bg-slate-900 select-none">
+      <div className="pointer-events-none absolute inset-0">
         {BACKGROUND_CARDS.map((card, index) => (
           <img
             key={index}
             src={ALL_BACK_IMAGES[card.themeIdx]}
             alt=""
-            className="pixelated absolute w-14 h-20 opacity-80 animate-float-diagonal"
+            className="pixelated animate-float-diagonal absolute h-20 w-14 opacity-80"
             style={{
               left: card.left,
               animationDelay: card.delay,
@@ -26,11 +26,11 @@ export const AnimatedBackground = ({ children, isCompact }: AnimatedBackgroundPr
           />
         ))}
       </div>
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] z-10" />
-      <div className="w-full h-full overflow-y-auto flex items-center justify-center">
+      <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-[2px]" />
+      <div className="flex h-full w-full items-center justify-center overflow-y-auto">
         <div
-          className={`relative z-20 h-full w-full flex items-center justify-center ${
-            isCompact && 'max-w-full xl:max-w-6xl 2xl:max-w-7xl mx-auto'
+          className={`relative z-20 flex h-full w-full items-center justify-center ${
+            isCompact && 'mx-auto max-w-full xl:max-w-6xl 2xl:max-w-7xl'
           }`}
         >
           {children}

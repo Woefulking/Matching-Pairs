@@ -73,6 +73,22 @@ export const GAME_THEMES = {
       { id: 8, img: './src/assets/themes/space/galaxy.png', name: 'galaxy' },
     ],
   },
+  sace: {
+    label: 'Sace',
+    price: 90,
+    frontImage: './src/assets/themes/space/frontImage.png',
+    backImage: './src/assets/themes/space/backImage.png',
+    cards: [
+      { id: 1, img: './src/assets/themes/space/ufo.png', name: 'ufo' },
+      { id: 2, img: './src/assets/themes/space/yellow.png', name: 'yellow' },
+      { id: 3, img: './src/assets/themes/space/blue.png', name: 'blue' },
+      { id: 4, img: './src/assets/themes/space/astronaut.png', name: 'astronaut' },
+      { id: 5, img: './src/assets/themes/space/alien.png', name: 'alien' },
+      { id: 6, img: './src/assets/themes/space/red.png', name: 'red' },
+      { id: 7, img: './src/assets/themes/space/black.png', name: 'black' },
+      { id: 8, img: './src/assets/themes/space/galaxy.png', name: 'galaxy' },
+    ],
+  },
 } as const;
 
 //Letters for logo
@@ -94,9 +110,8 @@ export const LOGO_WORDS = [
 ] as const;
 
 export const BACKGROUND_CARDS_COUNT = 60;
-export const ALL_THEMES = Object.values(GAME_THEMES);
+export const ALL_THEMES = Object.entries(GAME_THEMES);
 export const ALL_BACK_IMAGES = Object.values(GAME_THEMES).map((theme) => theme.backImage);
-export const ALL_FRONT_IMAGES = Object.values(GAME_THEMES).map((theme) => theme.frontImage);
 
 export const BACKGROUND_CARDS = Array.from({ length: BACKGROUND_CARDS_COUNT }).map((_, index) => {
   const calculatedDelay = index * 2 + Math.random() * 2;
