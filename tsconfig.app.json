@@ -26,7 +26,8 @@
     "noUncheckedSideEffectImports": true,
 
     "paths": {
-      "app/*": ["./src/app/*"]
+      "src/*": ["./src/*"],
+      "assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src"]

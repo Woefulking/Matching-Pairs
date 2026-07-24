@@ -3,14 +3,20 @@ import { GAME_DIFFICULTIES } from '../consts/consts';
 import type { GameDifficultyType } from '../types/types';
 
 interface DifficultySelectionProps {
+  onButtonClick: () => void;
   onStartRound: (difficulty: GameDifficultyType) => void;
 }
 
-export const DifficultySelection = ({ onStartRound }: DifficultySelectionProps) => {
+export const DifficultySelection = ({ onButtonClick, onStartRound }: DifficultySelectionProps) => {
   const [difficulty, setDifficulty] = useState<GameDifficultyType | null>(null);
 
   const difficulties = Object.keys(GAME_DIFFICULTIES) as GameDifficultyType[];
   const difficutlyParams = difficulty && GAME_DIFFICULTIES[difficulty];
+
+  const handleStartRound = (difficulty: GameDifficultyType) => {
+    onButtonClick();
+    onStartRound(difficulty);
+  };
 
   return (
     <div className="flex min-h-40 w-full flex-col items-center gap-4 px-4 md:min-h-52 md:gap-6 xl:min-h-65">
@@ -26,7 +32,7 @@ export const DifficultySelection = ({ onStartRound }: DifficultySelectionProps) 
               type="button"
               className="button sm:min-w-30 md:min-w-36 md:text-2xl lg:min-w-50 lg:text-3xl xl:min-w-62 xl:text-[36px] 2xl:min-w-70"
               key={difficulty}
-              onClick={() => onStartRound(difficulty)}
+              onClick={() => handleStartRound(difficulty)}
               onMouseLeave={() => setDifficulty(null)}
               onMouseEnter={() => setDifficulty(difficulty)}
             >

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ALL_THEMES, GAME_THEMES } from './consts/consts';
 import type { GameThemesType } from './types/types';
 import { StorePreview } from './components/StorePreview';
@@ -6,22 +6,48 @@ import { StoreCard } from './components/StoreCard';
 
 interface StoreProps {
   totalCoins: number;
+  activeTheme: GameThemesType;
   purchadesThemes: Set<GameThemesType>;
-  onBack: () => void;
+  onEquip: (theme: GameThemesType) => void;
   onBuy: (theme: GameThemesType) => void;
+  onBack: () => void;
 }
-export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps) => {
+export const Store = ({
+  totalCoins,
+  activeTheme,
+  purchadesThemes,
+  onEquip,
+  onBack,
+  onBuy,
+}: StoreProps) => {
   const [searchedTheme, setSearchedTheme] = useState<string>('');
   const [previewTheme, setPreviewTheme] = useState<GameThemesType | null>(null);
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
   const [isPreviewShowen, setIsPreviewShowen] = useState<boolean>(false);
+
+  const [coinsHud, setCoinsHud] = useState(totalCoins);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCoinsHud((prev) => {
+        if (prev <= totalCoins) {
+          clearInterval(timer);
+          return prev;
+        }
+
+        return prev - 1;
+      });
+    }, 20);
+
+    return () => clearInterval(timer);
+  }, [totalCoins]);
 
   const previewImages = useMemo(() => {
     if (!previewTheme) return [];
 
     const themeData = GAME_THEMES[previewTheme];
 
-    return [themeData.backImage, ...themeData.cards.map((card) => card.img)];
+    return [...themeData.cards.map((card) => card.img)];
   }, [previewTheme]);
 
   const getPreviewDeck = () => {
@@ -39,17 +65,16 @@ export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps
     return indices.map((index, posIndex) => ({
       src: previewImages[index],
       position: posIndex,
-      isBack: index === 0,
     }));
+  };
+
+  const handleSearchTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchedTheme(event.target.value);
   };
 
   const foundedThemes = useMemo(() => {
     return ALL_THEMES.filter(([key]) => key.toLowerCase().includes(searchedTheme.toLowerCase()));
   }, [searchedTheme]);
-
-  const handleSearchTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchedTheme(event.target.value);
-  };
 
   const handlePrev = () => {
     setCurrentCardIndex((prev) => (prev - 1 + previewImages.length) % previewImages.length);
@@ -108,7 +133,7 @@ export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps
           <h1 className="text-center text-3xl font-bold tracking-wide text-white md:text-5xl lg:text-6xl xl:text-[86px]">
             Store
           </h1>
-          <div className="flex w-full max-w-110 flex-row items-center justify-between md:max-w-120 lg:max-w-220 xl:max-w-230 2xl:max-w-250">
+          <div className="flex w-full max-w-110 flex-row items-center justify-between md:max-w-120 lg:max-w-220 xl:max-w-230">
             <div className="flex flex-row items-center justify-center">
               <img
                 className="pixelated h-8 w-8 lg:h-12 lg:w-12 2xl:h-12 2xl:w-12"
@@ -116,7 +141,7 @@ export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps
                 alt="coins"
               />
               <span className="text-lg font-bold text-amber-400 md:text-xl lg:text-3xl">
-                {totalCoins}
+                {coinsHud}
               </span>
             </div>
             <input
@@ -132,7 +157,7 @@ export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps
         </div>
         {foundedThemes.length > 0 ? (
           <div
-            className={`flex w-full max-w-110 scrollbar-none flex-row items-start justify-start gap-2 overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] md:max-w-120 lg:max-w-220 xl:grid xl:max-w-230 xl:scrollbar-thin xl:scrollbar-thumb-sky-400 xl:scrollbar-track-slate-900 xl:grid-cols-3 xl:items-stretch xl:gap-4 xl:gap-y-2 xl:overflow-x-hidden xl:overflow-y-auto xl:pr-4 2xl:max-w-250 2xl:gap-y-4`}
+            className={`flex w-full max-w-110 scrollbar-none flex-row justify-start gap-2 overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] md:max-w-120 lg:max-w-220 xl:grid xl:max-w-230 xl:scrollbar-thin xl:scrollbar-thumb-sky-400 xl:scrollbar-track-slate-900 xl:grid-cols-3 xl:items-stretch xl:gap-4 xl:gap-y-2 xl:overflow-x-hidden xl:overflow-y-auto xl:pr-4 2xl:gap-y-4`}
             style={{
               maxHeight: 'calc(100vh - var(--header-height, 220px) - 20px)',
             }}
@@ -140,6 +165,7 @@ export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps
             {foundedThemes.map(([theme, params]) => {
               const isThemePurchased = purchadesThemes.has(theme as GameThemesType);
               const gameTheme = theme as GameThemesType;
+              const isThemeActive = theme === activeTheme;
               return (
                 <div
                   key={theme}
@@ -147,9 +173,11 @@ export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps
                 >
                   <StoreCard
                     label={params.label}
-                    backImage={params.backImage}
+                    deckImage={params.deck}
                     price={params.price}
+                    isThemeActive={isThemeActive}
                     isThemePurchased={isThemePurchased}
+                    onEquip={() => onEquip(gameTheme)}
                     onBuy={() => onBuy(gameTheme)}
                     onPreviewOpen={() => handleOpenPreview(gameTheme)}
                   />
@@ -158,7 +186,7 @@ export const Store = ({ totalCoins, purchadesThemes, onBack, onBuy }: StoreProps
             })}
           </div>
         ) : (
-          <div className="flex w-full max-w-110 flex-1 flex-col items-center justify-center py-4 text-center md:max-w-120 lg:max-w-220">
+          <div className="flex w-full max-w-110 flex-1 flex-col items-center justify-center py-4 text-center md:max-w-120 lg:max-w-220 xl:max-w-230">
             <span className="text-lg font-medium tracking-wide text-slate-400 md:text-2xl lg:text-4xl xl:text-4xl">
               No themes found for "{searchedTheme}"
             </span>

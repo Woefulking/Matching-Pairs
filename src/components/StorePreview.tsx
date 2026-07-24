@@ -4,7 +4,7 @@ import type { GameThemesType } from '../types/types';
 
 interface StorePreviewProps {
   theme: GameThemesType;
-  getPreviewDeck: () => { src: string; position: number; isBack: boolean }[];
+  getPreviewDeck: () => { src: string; position: number }[];
   onPrev: () => void;
   onNext: () => void;
   onClose: () => void;
@@ -55,22 +55,13 @@ export const StorePreview = ({
                 key={index}
                 className={`aspect-5/7 w-16 object-contain transition-all duration-300 md:w-20 lg:w-28 xl:w-32 2xl:w-32 ${slotStyles()}`}
               >
-                {card.isBack ? (
+                <div className="absolute inset-0 flex h-full w-full items-center justify-center">
                   <img
-                    key={index}
-                    src={card.src}
-                    className="pixelated h-full w-full"
-                    alt="card back"
+                    src={GAME_THEMES[theme].frontImage}
+                    className="pixelated absolute inset-0 h-full w-full"
                   />
-                ) : (
-                  <div className="absolute inset-0 flex h-full w-full items-center justify-center">
-                    <img
-                      src={GAME_THEMES[theme].frontImage}
-                      className="pixelated absolute inset-0 h-full w-full"
-                    />
-                    <img className="pixelated inset-0 z-10 w-[80%]" src={card.src} alt="" />
-                  </div>
-                )}
+                  <img className="pixelated inset-0 z-10 w-[80%]" src={card.src} alt="" />
+                </div>
               </div>
             );
           })}

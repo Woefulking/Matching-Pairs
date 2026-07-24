@@ -11,21 +11,21 @@ export const Menu = (props: MenuProps) => {
   return (
     <div className="flex flex-col items-center gap-8 md:gap-12 xl:gap-16">
       <Logo />
-      <div className="flex flex-col gap-3 lg:gap-4 w-full items-center">
+      <div className="flex w-full flex-col items-center gap-3 lg:gap-4">
         <button
-          className="button sm:min-w-30 md:min-w-36 lg:min-w-50 xl:min-w-62 2xl:min-w-70 md:text-2xl lg:text-3xl xl:text-[36px]"
+          className="button min-w-30 md:min-w-36 md:text-2xl lg:min-w-50 lg:text-3xl xl:min-w-62 xl:text-[36px] 2xl:min-w-70"
           onClick={onPlay}
         >
           Play
         </button>
         <button
-          className="button sm:min-w-30 md:min-w-36 lg:min-w-50 xl:min-w-62 2xl:min-w-70 md:text-2xl lg:text-3xl xl:text-[36px]"
+          className="button text-md min-w-30 md:min-w-36 md:text-2xl lg:min-w-50 lg:text-3xl xl:min-w-62 xl:text-[36px] 2xl:min-w-70"
           onClick={onOpenStore}
         >
           Store
         </button>
         <button
-          className="button sm:min-w-30 md:min-w-36 lg:min-w-50 xl:min-w-62 2xl:min-w-70 md:text-2xl lg:text-3xl xl:text-[36px]"
+          className="button min-w-30 md:min-w-36 md:text-2xl lg:min-w-50 lg:text-3xl xl:min-w-62 xl:text-[36px] 2xl:min-w-70"
           onClick={onOpenSettings}
         >
           Settings

@@ -30,6 +30,7 @@ export const GAME_THEMES = {
     price: 0,
     frontImage: './src/assets/themes/fruits/frontImage.png',
     backImage: './src/assets/themes/fruits/backImage.png',
+    deck: './src/assets/themes/fruits/deck.png',
     cards: [
       { id: 1, img: './src/assets/themes/fruits/apple.png', name: 'apple' },
       { id: 2, img: './src/assets/themes/fruits/banana.png', name: 'banana' },
@@ -46,6 +47,7 @@ export const GAME_THEMES = {
     price: 120,
     frontImage: './src/assets/themes/ocean/frontImage.png',
     backImage: './src/assets/themes/ocean/backImage.png',
+    deck: './src/assets/themes/ocean/deck.png',
     cards: [
       { id: 1, img: './src/assets/themes/ocean/clamp.png', name: 'clamp' },
       { id: 2, img: './src/assets/themes/ocean/clown.png', name: 'clown' },
@@ -62,6 +64,7 @@ export const GAME_THEMES = {
     price: 90,
     frontImage: './src/assets/themes/space/frontImage.png',
     backImage: './src/assets/themes/space/backImage.png',
+    deck: './src/assets/themes/space/deck.png',
     cards: [
       { id: 1, img: './src/assets/themes/space/ufo.png', name: 'ufo' },
       { id: 2, img: './src/assets/themes/space/yellow.png', name: 'yellow' },
@@ -78,6 +81,7 @@ export const GAME_THEMES = {
     price: 90,
     frontImage: './src/assets/themes/space/frontImage.png',
     backImage: './src/assets/themes/space/backImage.png',
+    deck: './src/assets/themes/ocean/deck.png',
     cards: [
       { id: 1, img: './src/assets/themes/space/ufo.png', name: 'ufo' },
       { id: 2, img: './src/assets/themes/space/yellow.png', name: 'yellow' },
@@ -91,7 +95,6 @@ export const GAME_THEMES = {
   },
 } as const;
 
-//Letters for logo
 export const LOGO_WORDS = [
   [
     './src/assets/letters/P.png',
