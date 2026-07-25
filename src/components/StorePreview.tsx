@@ -1,6 +1,7 @@
 import { createPortal } from 'react-dom';
 import { GAME_THEMES } from '../consts/consts';
 import type { GameThemesType } from '../types/types';
+import { MenuButton } from './MenuButton';
 
 interface StorePreviewProps {
   theme: GameThemesType;
@@ -19,7 +20,7 @@ export const StorePreview = ({
   return createPortal(
     <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-[5px]">
       <div className="relative mx-auto flex h-full w-full max-w-full items-center justify-center xl:max-w-6xl 2xl:max-w-7xl">
-        <button
+        <MenuButton
           className="transparent absolute top-4 right-10 flex h-8 w-8 min-w-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:top-4 md:h-10 md:w-10 lg:hover:scale-110 xl:top-10 xl:right-0 xl:h-12 xl:w-12"
           type="button"
           onClick={onClose}
@@ -29,9 +30,9 @@ export const StorePreview = ({
             alt="back"
             className="pixelated h-full w-full object-contain md:h-auto"
           />
-        </button>
+        </MenuButton>
 
-        <button
+        <MenuButton
           type="button"
           className="transparent absolute top-1/2 left-30 h-10 w-10 min-w-0 -translate-y-1/2 p-0 transition duration-500 ease-in-out active:scale-95 md:h-16 md:w-16 lg:left-40 lg:hover:scale-110 xl:left-40"
           onClick={onPrev}
@@ -41,7 +42,7 @@ export const StorePreview = ({
             alt="back"
             className="pixelated h-full w-full object-contain md:h-auto"
           />
-        </button>
+        </MenuButton>
         <div className="flex flex-row gap-4">
           {getPreviewDeck().map((card, index) => {
             const slotStyles = () => {
@@ -66,7 +67,7 @@ export const StorePreview = ({
             );
           })}
         </div>
-        <button
+        <MenuButton
           type="button"
           className="transparent absolute top-1/2 right-30 h-10 w-10 min-w-0 -translate-y-1/2 p-0 transition duration-500 ease-in-out active:scale-95 md:h-16 md:w-16 lg:right-40 lg:hover:scale-110 xl:right-40"
           onClick={onNext}
@@ -76,7 +77,7 @@ export const StorePreview = ({
             alt="back"
             className="pixelated h-full w-full rotate-180 object-contain md:h-auto"
           />
-        </button>
+        </MenuButton>
       </div>
     </div>,
     document.body

@@ -7,6 +7,7 @@ import type {
   GameThemesSettings,
 } from '../types/types';
 import { Card } from './Card';
+import { useAudio } from 'src/hooks/useAudio/useAudio';
 
 interface GameFieldProps {
   deck: CardType[];
@@ -36,6 +37,7 @@ export const GameField = ({
   onCardClick,
   onSecondCardOpened,
 }: GameFieldProps) => {
+  const { play, stop } = useAudio();
   const deckRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const cardsRefs = useRef<HTMLButtonElement[]>([]);
@@ -47,27 +49,26 @@ export const GameField = ({
     const deckCoords = deckRef.current.getBoundingClientRect();
     const cardsCoords = cardsRefs.current.map((card) => card?.getBoundingClientRect());
 
-    let maxDuration = 0;
+    const activeAnimations: Animation[] = [];
 
+    play('cardShuffle');
     const totalCards = deck.length;
+
     for (let i = 0; i < totalCards; i++) {
       const card = cardsRefs.current[i];
       const targetRect = cardsCoords[i];
       if (!card || !targetRect) continue;
 
       const currentCardLayer = totalCards - 1 - i;
-
       const deckCardOffsetTop = currentCardLayer * 5;
 
       const dx = deckCoords.left + deckCoords.width / 2 - (targetRect.left + targetRect.width / 2);
-
       const dy =
         deckCardOffsetTop +
         (deckCoords.top + deckCoords.height / 2) -
         (targetRect.top + targetRect.height / 2);
 
       const delay = i * 120;
-      maxDuration = Math.max(maxDuration, delay + 400);
 
       card.style.zIndex = String(totalCards - i);
       const animation = card.animate(
@@ -80,13 +81,25 @@ export const GameField = ({
         }
       );
 
+      activeAnimations.push(animation);
+
       if (i === totalCards - 1) {
         animation.onfinish = () => {
+          stop('cardShuffle');
           onAnimationEnd('playing');
         };
       }
     }
-  }, [status, deck.length, onAnimationEnd]);
+
+    return () => {
+      stop('cardShuffle');
+
+      activeAnimations.forEach((animation) => {
+        animation.onfinish = null;
+        animation.cancel();
+      });
+    };
+  }, [status, deck.length, onAnimationEnd, play, stop]);
 
   return (
     <>
@@ -115,6 +128,12 @@ export const GameField = ({
             const handleSecondCardOpened = () => {
               if (card.uniqueId === secondCard?.uniqueId) {
                 onSecondCardOpened();
+
+                if (comparisonResult === 'match') {
+                  play('match');
+                } else {
+                  play('mismatch');
+                }
               }
             };
 

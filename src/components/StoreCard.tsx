@@ -1,3 +1,5 @@
+import { MenuButton } from './MenuButton';
+
 interface StoreCardProps {
   label: string;
   deckImage: string;
@@ -44,15 +46,15 @@ export const StoreCard = ({
           </span>
         </div>
         <div className="flex w-full flex-row items-center justify-between">
-          <button
+          <MenuButton
             className={`button md:text-md w-full max-w-16 min-w-0 px-1 py-0.5 text-[16px] lg:max-w-25 lg:py-1 lg:text-2xl xl:text-2xl 2xl:max-w-35 2xl:text-2xl ${!isThemePurchased && 'border-2 border-sky-400 hover:bg-sky-400 hover:text-slate-950'} ${isThemePurchased && !isThemeActive && 'border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-slate-950'} ${isThemeActive && 'pointer-events-none cursor-default border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.3)]'}`}
             onClick={!isThemePurchased ? onBuy : onEquip}
           >
             {!isThemePurchased && 'Buy'}
             {isThemePurchased && !isThemeActive && 'Equip'}
             {isThemeActive && 'Active'}
-          </button>
-          <button
+          </MenuButton>
+          <MenuButton
             className="transparent flex h-10 w-10 min-w-0 shrink-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:h-10 md:w-10 lg:h-14 lg:w-14 lg:hover:scale-110"
             onClick={onPreviewOpen}
           >
@@ -61,7 +63,7 @@ export const StoreCard = ({
               alt="preview deck"
               className="pixelated h-full w-full object-contain"
             />
-          </button>
+          </MenuButton>
         </div>
       </div>
     </div>

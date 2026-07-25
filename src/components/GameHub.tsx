@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { GAME_THEMES } from '../consts/consts';
 import type { GameThemesType } from '../types/types';
 import { formatTime } from '../utils/formatTime';
+import { MenuButton } from './MenuButton';
 
 interface GameHubProps {
   totalCoins: number;
@@ -11,6 +12,7 @@ interface GameHubProps {
   pairsFound: number;
   onRestart: () => void;
 }
+
 export const GameHub = ({
   totalCoins,
   timeLeft,
@@ -78,9 +80,9 @@ export const GameHub = ({
           <span className="text-[36px]">{coinsHud}</span>
         </div>
         {/* Restart */}
-        <button className="button text-black" type="button" onClick={() => onRestart()}>
+        <MenuButton className="button text-black" type="button" onClick={onRestart}>
           Restart
-        </button>
+        </MenuButton>
       </div>
     </div>
   );

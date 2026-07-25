@@ -10,8 +10,10 @@ import { getSavedState } from '../utils/getSavedGameData';
 import { generateGameDeck } from '../utils/generateDeck';
 import { GAME_DIFFICULTIES, GAME_THEMES } from '../consts/consts';
 import { GameSessionReducer, initialState } from '../reducers/gameSessionReducer';
+import { useAudio } from './useAudio/useAudio';
 
 export function useGameSession(theme: GameThemesType, onWin: (result: WinResultInterface) => void) {
+  const { play } = useAudio();
   const [state, dispatch] = useReducer(GameSessionReducer, initialState, getSavedState);
 
   const startRound = (difficulty: GameDifficultyType) => {
@@ -41,11 +43,6 @@ export function useGameSession(theme: GameThemesType, onWin: (result: WinResultI
 
   const collectReward = () => {
     dispatch({ type: 'collectReward' });
-  };
-
-  const clear = () => {
-    localStorage.removeItem('savedGameState');
-    dispatch({ type: 'clear' });
   };
 
   //Таймер
@@ -84,5 +81,17 @@ export function useGameSession(theme: GameThemesType, onWin: (result: WinResultI
     collectReward();
   }, [state.status, state.difficulty, state.rewardGiven, onWin, state.timeLeft, state.moves]);
 
-  return { state, startRound, setGameStatus, cardClick, resolveTurn, collectReward, clear };
+  useEffect(() => {
+    if (state.status !== 'loss') return;
+    play('lose');
+  }, [state.status, play]);
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('savedGameState');
+      dispatch({ type: 'clear' });
+    };
+  }, []);
+
+  return { state, startRound, setGameStatus, cardClick, resolveTurn, collectReward };
 }

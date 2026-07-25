@@ -80,3 +80,13 @@ export type GameSessionActions =
   | { type: 'collectReward' }
   | { type: 'tick' }
   | { type: 'clear' };
+
+export type SoundType =
+  | 'menuClick'
+  | 'cardClick'
+  | 'cardShuffle'
+  | 'match'
+  | 'mismatch'
+  | 'win'
+  | 'lose'
+  | 'background';

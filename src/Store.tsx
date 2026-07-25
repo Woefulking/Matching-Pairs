@@ -10,16 +10,8 @@ interface StoreProps {
   purchadesThemes: Set<GameThemesType>;
   onEquip: (theme: GameThemesType) => void;
   onBuy: (theme: GameThemesType) => void;
-  onBack: () => void;
 }
-export const Store = ({
-  totalCoins,
-  activeTheme,
-  purchadesThemes,
-  onEquip,
-  onBack,
-  onBuy,
-}: StoreProps) => {
+export const Store = ({ totalCoins, activeTheme, purchadesThemes, onEquip, onBuy }: StoreProps) => {
   const [searchedTheme, setSearchedTheme] = useState<string>('');
   const [previewTheme, setPreviewTheme] = useState<GameThemesType | null>(null);
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);
@@ -114,17 +106,6 @@ export const Store = ({
 
   return (
     <>
-      <button
-        className="absolute top-0 left-4 flex h-12 w-10 min-w-0 items-center justify-center border-0 bg-transparent p-0 transition duration-500 ease-in-out active:scale-95 md:top-4 md:h-14 md:w-14 lg:hover:scale-110 xl:top-10"
-        type="button"
-        onClick={onBack}
-      >
-        <img
-          src="./src/assets/arrow.png"
-          alt="back"
-          className="pixelated h-full w-full object-contain md:h-auto"
-        />
-      </button>
       <div
         ref={containerRef}
         className="flex h-full w-full flex-col items-center gap-1.5 px-4 pt-2 md:gap-1.5 md:pt-2 lg:gap-2 lg:pt-20 xl:pt-4"
