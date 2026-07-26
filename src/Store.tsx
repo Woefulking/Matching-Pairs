@@ -3,6 +3,7 @@ import { ALL_THEMES, GAME_THEMES } from './consts/consts';
 import type { GameThemesType } from './types/types';
 import { StorePreview } from './components/StorePreview';
 import { StoreCard } from './components/StoreCard';
+import { Header } from './components/Header';
 
 interface StoreProps {
   totalCoins: number;
@@ -111,9 +112,7 @@ export const Store = ({ totalCoins, activeTheme, purchadesThemes, onEquip, onBuy
         className="flex h-full w-full flex-col items-center gap-1.5 px-4 pt-2 md:gap-1.5 md:pt-2 lg:gap-2 lg:pt-20 xl:pt-4"
       >
         <div ref={headerRef} className="flex w-full flex-col items-center gap-1.5 md:gap-1">
-          <h1 className="text-center text-3xl font-bold tracking-wide text-white md:text-5xl lg:text-6xl xl:text-[86px]">
-            Store
-          </h1>
+          <Header value="Store" />
           <div className="flex w-full max-w-110 flex-row items-center justify-between md:max-w-120 lg:max-w-220 xl:max-w-230">
             <div className="flex flex-row items-center justify-center">
               <img

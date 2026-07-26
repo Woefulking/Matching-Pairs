@@ -34,7 +34,7 @@ export const Card = ({
         if (e.target !== e.currentTarget) return;
         onAnimationPhaseEnd();
       }}
-      className={`aspect-5/7 ${!isOpened ? 'duration-300 hover:-translate-y-2' : ''} ${effectClass}`}
+      className={`aspect-5/7 h-[20vh] w-auto rounded-lg transition-all duration-300 ${!isOpened ? 'hover:-translate-y-1 md:hover:-translate-y-2' : ''} ${effectClass} `}
     >
       <div className="group h-full w-full perspective-distant">
         <div
@@ -48,10 +48,20 @@ export const Card = ({
           className={`relative h-full w-full transition-transform duration-300 transform-3d ${isOpened && 'transform-[rotateY(180deg)]'}`}
         >
           <div className="absolute inset-0 flex h-full w-full transform-[rotateY(180deg)] items-center justify-center backface-hidden">
-            <img src={frontImage} className="pixelated absolute inset-0 h-full w-full"></img>
-            <img className="pixelated inset-0 z-10 w-30" src={image} alt="" />
+            <img
+              src={frontImage}
+              className="pixelated absolute inset-0 h-full w-full object-contain"
+            ></img>
+            <img
+              className="pixelated relative z-10 h-[80%] w-[80%] object-contain"
+              src={image}
+              alt=""
+            />
           </div>
-          <img src={backImage} className="pixelated inset-0 h-full w-full backface-hidden"></img>
+          <img
+            src={backImage}
+            className="pixelated absolute inset-0 h-full w-full object-contain backface-hidden"
+          />
         </div>
       </div>
     </button>

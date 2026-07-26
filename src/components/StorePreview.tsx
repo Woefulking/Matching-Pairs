@@ -1,7 +1,7 @@
-import { createPortal } from 'react-dom';
 import { GAME_THEMES } from '../consts/consts';
 import type { GameThemesType } from '../types/types';
 import { MenuButton } from './MenuButton';
+import { Modal } from './Modal';
 
 interface StorePreviewProps {
   theme: GameThemesType;
@@ -17,9 +17,9 @@ export const StorePreview = ({
   onNext,
   onClose,
 }: StorePreviewProps) => {
-  return createPortal(
-    <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-[5px]">
-      <div className="relative mx-auto flex h-full w-full max-w-full items-center justify-center xl:max-w-6xl 2xl:max-w-7xl">
+  return (
+    <Modal>
+      <>
         <MenuButton
           className="transparent absolute top-4 right-10 flex h-8 w-8 min-w-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:top-4 md:h-10 md:w-10 lg:hover:scale-110 xl:top-10 xl:right-0 xl:h-12 xl:w-12"
           type="button"
@@ -78,8 +78,7 @@ export const StorePreview = ({
             className="pixelated h-full w-full rotate-180 object-contain md:h-auto"
           />
         </MenuButton>
-      </div>
-    </div>,
-    document.body
+      </>
+    </Modal>
   );
 };

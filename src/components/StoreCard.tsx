@@ -47,7 +47,7 @@ export const StoreCard = ({
         </div>
         <div className="flex w-full flex-row items-center justify-between">
           <MenuButton
-            className={`button md:text-md w-full max-w-16 min-w-0 px-1 py-0.5 text-[16px] lg:max-w-25 lg:py-1 lg:text-2xl xl:text-2xl 2xl:max-w-35 2xl:text-2xl ${!isThemePurchased && 'border-2 border-sky-400 hover:bg-sky-400 hover:text-slate-950'} ${isThemePurchased && !isThemeActive && 'border-2 border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-slate-950'} ${isThemeActive && 'pointer-events-none cursor-default border-2 border-emerald-500 bg-emerald-500/10 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.3)]'}`}
+            className={`button md:text-md w-full max-w-16 min-w-0 px-1 py-0.5 text-[16px] lg:max-w-25 lg:py-1 lg:text-2xl xl:text-2xl 2xl:max-w-35 2xl:text-2xl ${!isThemePurchased && 'button-blue'} ${isThemePurchased && !isThemeActive && 'button-purple'} ${isThemeActive && '] button-green pointer-events-none cursor-default'}`}
             onClick={!isThemePurchased ? onBuy : onEquip}
           >
             {!isThemePurchased && 'Buy'}

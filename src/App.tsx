@@ -2,32 +2,31 @@ import { Menu } from './Menu';
 import { Game } from './Game';
 import { useApp } from './hooks/useApp';
 import { Store } from './Store';
-import type { WinResultInterface } from './types/types';
-import { GAME_DIFFICULTIES } from './consts/consts';
 import { Settings } from './Settings';
 import { AnimatedBackground } from './components/AnimatedBackground';
-import { useAudio } from 'src/hooks/useAudio/useAudio';
 import { MenuButton } from './components/MenuButton';
+import { Statistics } from './Statistics';
 
 function App() {
-  const { state, changeScreen, addCoins, updateStatistics, purchaseTheme, setActiveTheme } =
-    useApp();
-
-  const { play } = useAudio();
+  const {
+    state,
+    changeScreen,
+    handleWin,
+    clearStatistics,
+    musicVolume,
+    handleMusicVolumeChange,
+    sfxVolume,
+    handleSfxVolumeChange,
+    purchaseTheme,
+    setActiveTheme,
+  } = useApp();
 
   //TODO
+  //Разобраться в файлах и переложить все по папочкам
   //Сделать первым экраном предупреждение, по тапу которого начнется играть музыка
   //Сделать анимацию появления названия игры сверху, а меню снизу
   //На маленьких экранах  в игре карточка будет примерно 80 пикселей в ширину. Игровой худ сверху и так наверное вплоть до xl
-  //Сделать нормальные настройки
   //Подумать над интерфейсом во время раунда
-
-  const handleWin = (result: WinResultInterface) => {
-    play('win');
-    const coinsForWin = GAME_DIFFICULTIES[result.difficulty].coins;
-    addCoins(coinsForWin);
-    updateStatistics(result.difficulty, result.time, result.moves);
-  };
 
   // useEffect(() => {
   //   play('background');
@@ -41,6 +40,7 @@ function App() {
             onPlay={() => changeScreen('game')}
             onOpenStore={() => changeScreen('store')}
             onOpenSettings={() => changeScreen('settings')}
+            onOpenStatistics={() => changeScreen('statistics')}
           />
         );
       case 'game':
@@ -56,7 +56,17 @@ function App() {
           />
         );
       case 'settings': {
-        return <Settings activeTheme={state.activeTheme} onChangeTheme={setActiveTheme} />;
+        return (
+          <Settings
+            musicVolume={musicVolume}
+            sfxVolume={sfxVolume}
+            onChangeMusicVolume={handleMusicVolumeChange}
+            onChangeSfxVolume={handleSfxVolumeChange}
+          />
+        );
+      }
+      case 'statistics': {
+        return <Statistics statistics={state.statistics} onClearStatistics={clearStatistics} />;
       }
     }
   }

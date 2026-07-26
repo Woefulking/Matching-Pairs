@@ -1,17 +1,26 @@
+import menuClick from 'assets/sounds/menuClick.ogg';
+import cardClick from 'assets/sounds/cardClick.ogg';
+import match from 'assets/sounds/match.ogg';
+import mismatch from 'assets/sounds/mismatch.ogg';
+import cardShuffle from 'assets/sounds/cardShuffle.ogg';
+import win from 'assets/sounds/win.ogg';
+import lose from 'assets/sounds/lose.ogg';
+import background from 'assets/sounds/background.ogg';
+
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { SoundType } from 'src/types/types';
 import { AudioContext } from './context';
 
-const soundConfig: Record<SoundType, { src: string; type: 'music' | 'sfx' }> = {
-  menuClick: { src: './src/assets/sounds/menuClick.ogg', type: 'sfx' },
-  cardClick: { src: './src/assets/sounds/cardClick.ogg', type: 'sfx' },
-  match: { src: './src/assets/sounds/match.ogg', type: 'sfx' },
-  mismatch: { src: './src/assets/sounds/mismatch.ogg', type: 'sfx' },
-  cardShuffle: { src: './src/assets/sounds/cardShuffle.ogg', type: 'sfx' },
-  win: { src: './src/assets/sounds/win.ogg', type: 'sfx' },
-  lose: { src: './src/assets/sounds/lose.ogg', type: 'sfx' },
-  background: { src: './src/assets/sounds/background.ogg', type: 'music' },
-};
+const soundConfig = {
+  menuClick: { src: menuClick, type: 'sfx' },
+  cardClick: { src: cardClick, type: 'sfx' },
+  match: { src: match, type: 'sfx' },
+  mismatch: { src: mismatch, type: 'sfx' },
+  cardShuffle: { src: cardShuffle, type: 'sfx' },
+  win: { src: win, type: 'sfx' },
+  lose: { src: lose, type: 'sfx' },
+  background: { src: background, type: 'music' },
+} satisfies Record<SoundType, { src: string; type: 'music' | 'sfx' }>;
 
 interface AudioMapItem {
   audio: HTMLAudioElement;
@@ -19,8 +28,18 @@ interface AudioMapItem {
 }
 
 export const AudioProvider = ({ children }: { children: ReactNode }) => {
-  const [musicVolume, setMusicVolume] = useState<number>(50);
-  const [sfxVolume, setSfxVolume] = useState<number>(30);
+  const [musicVolume, setMusicVolume] = useState<number>(() => {
+    const saved = localStorage.getItem('savedAppState');
+    if (!saved) return 50;
+    const parsed = JSON.parse(saved);
+    return typeof parsed.musicVolume === 'number' ? parsed.musicVolume : 50;
+  });
+  const [sfxVolume, setSfxVolume] = useState<number>(() => {
+    const saved = localStorage.getItem('savedAppState');
+    if (!saved) return 50;
+    const parsed = JSON.parse(saved);
+    return typeof parsed.sfxVolume === 'number' ? parsed.sfxVolume : 50;
+  });
 
   const audioMapRef = useRef<Record<string, AudioMapItem>>({});
 

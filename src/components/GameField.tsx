@@ -30,7 +30,6 @@ export const GameField = ({
   secondCard,
   matchedCards,
   comparisonResult,
-  diffuculty,
   currentTheme,
   isLoose,
   onAnimationEnd,
@@ -102,60 +101,54 @@ export const GameField = ({
   }, [status, deck.length, onAnimationEnd, play, stop]);
 
   return (
-    <>
+    <div className="flex h-full w-full flex-col items-center justify-center">
       <div
         ref={deckRef}
-        className="absolute top-1/2 right-0 aspect-5/7 -translate-y-1/2"
-        style={{ width: diffuculty.cardWidth }}
+        className="pointer-events-none absolute top-1/2 right-20 aspect-5/7 w-10 -translate-y-1/2 opacity-0 md:right-40 md:w-16 lg:right-20"
       />
-      <div className="flex w-full flex-row justify-center">
-        <div
-          ref={boardRef}
-          className="grid gap-4"
-          style={{
-            gridTemplateColumns: `repeat(4, ${diffuculty.cardWidth})`,
-          }}
-        >
-          {deck.map((card, index) => {
-            const isSelected =
-              firstCard?.uniqueId === card.uniqueId || secondCard?.uniqueId === card.uniqueId;
-            const isMatched = matchedCards.has(card.name);
-            const isOpened = isSelected || isMatched || isLoose;
+      <div
+        ref={boardRef}
+        className="mx-auto grid max-w-max grid-cols-4 items-center justify-items-center gap-2 md:gap-3 lg:gap-4"
+      >
+        {deck.map((card, index) => {
+          const isSelected =
+            firstCard?.uniqueId === card.uniqueId || secondCard?.uniqueId === card.uniqueId;
+          const isMatched = matchedCards.has(card.name);
+          const isOpened = isSelected || isMatched || isLoose;
 
-            const runMatchAnimation = comparisonResult === 'match' && isSelected;
-            const runMismatchAnimation = comparisonResult === 'mismatch' && isSelected;
+          const runMatchAnimation = comparisonResult === 'match' && isSelected;
+          const runMismatchAnimation = comparisonResult === 'mismatch' && isSelected;
 
-            const handleSecondCardOpened = () => {
-              if (card.uniqueId === secondCard?.uniqueId) {
-                onSecondCardOpened();
+          const handleSecondCardOpened = () => {
+            if (card.uniqueId === secondCard?.uniqueId) {
+              onSecondCardOpened();
 
-                if (comparisonResult === 'match') {
-                  play('match');
-                } else {
-                  play('mismatch');
-                }
+              if (comparisonResult === 'match') {
+                play('match');
+              } else {
+                play('mismatch');
               }
-            };
+            }
+          };
 
-            return (
-              <Card
-                ref={(el) => {
-                  if (el) cardsRefs.current[index] = el;
-                }}
-                key={index}
-                image={card.img}
-                frontImage={currentTheme.frontImage}
-                backImage={currentTheme.backImage}
-                isOpened={isOpened}
-                runMatchAnimation={runMatchAnimation}
-                runMismatchAnimation={runMismatchAnimation}
-                onAnimationPhaseEnd={handleSecondCardOpened}
-                onClick={() => onCardClick(card)}
-              />
-            );
-          })}
-        </div>
+          return (
+            <Card
+              ref={(el) => {
+                if (el) cardsRefs.current[index] = el;
+              }}
+              key={card.uniqueId}
+              image={card.img}
+              frontImage={currentTheme.frontImage}
+              backImage={currentTheme.backImage}
+              isOpened={isOpened}
+              runMatchAnimation={runMatchAnimation}
+              runMismatchAnimation={runMismatchAnimation}
+              onAnimationPhaseEnd={handleSecondCardOpened}
+              onClick={() => onCardClick(card)}
+            />
+          );
+        })}
       </div>
-    </>
+    </div>
   );
 };

@@ -22,9 +22,7 @@ export const Game = ({ theme, coins, onWin }: GameProps) => {
   const currentTheme = GAME_THEMES[theme];
 
   const isIdle = state.status === 'idle';
-  const isPlaying = state.status === 'playing';
   const isLoose = state.status === 'loss';
-  const isWin = state.status === 'loss';
   const isGameEnd = state.status === 'win' || state.status === 'loss';
 
   const comparisonResult = state.comparisonResult;
@@ -62,6 +60,17 @@ export const Game = ({ theme, coins, onWin }: GameProps) => {
             onCardClick={handleCardClick}
             onSecondCardOpened={resolveTurn}
           />
+          {isGameEnd && (
+            <div
+              className={`pointer-events-none absolute inset-0 z-40 flex ${isLoose ? 'animate-pulse' : 'animate-bounce'} items-center justify-center select-none`}
+            >
+              <span
+                className={`text-6xl font-black tracking-widest ${isLoose ? 'text-red-500' : 'text-emerald-400'} uppercase italic drop-shadow-[0_5px_10px_rgba(0,0,0,0.8)] md:text-8xl`}
+              >
+                {isLoose ? 'Game Over' : 'Victory'}
+              </span>
+            </div>
+          )}
         </div>
       )}
     </>

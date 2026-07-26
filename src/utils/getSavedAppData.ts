@@ -11,7 +11,7 @@ export const getSavedAppData = (): AppState => {
     };
 
     const path = window.location.pathname.replace('/', '');
-    const screen: ScreenType = ['menu', 'game', 'store'].includes(path)
+    const screen: ScreenType = ['menu', 'game', 'store', 'settings', 'statistics'].includes(path)
       ? (path as ScreenType)
       : 'menu';
 

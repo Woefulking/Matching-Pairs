@@ -30,7 +30,7 @@ export const AnimatedBackground = ({ children, isCompact }: AnimatedBackgroundPr
       <div className="flex h-full w-full items-center justify-center overflow-y-auto">
         <div
           className={`relative z-20 flex h-full w-full items-center justify-center ${
-            isCompact && 'mx-auto max-w-full xl:max-w-6xl xl:pb-4 2xl:max-w-7xl'
+            isCompact && 'mx-auto max-w-full lg:max-w-6xl xl:max-w-7xl xl:pb-4'
           }`}
         >
           {children}

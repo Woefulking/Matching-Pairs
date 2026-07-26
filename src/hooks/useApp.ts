@@ -1,21 +1,16 @@
 import { useEffect, useReducer } from 'react';
 import { getSavedAppData } from '../utils/getSavedAppData';
-import type { GameDifficultyType, GameThemesType, ScreenType } from '../types/types';
+import type { GameThemesType, ScreenType, WinResultInterface } from '../types/types';
 import { AppReducer, initialState } from '../reducers/appReducer';
+import { GAME_DIFFICULTIES } from 'src/consts/consts';
+import { useAudio } from './useAudio/useAudio';
 
 export function useApp() {
   const [state, dispatch] = useReducer(AppReducer, initialState, getSavedAppData);
+  const { play, musicVolume, setMusicVolume, sfxVolume, setSfxVolume } = useAudio();
 
   const changeScreen = (screen: ScreenType) => {
     dispatch({ type: 'changeScreen', payload: screen });
-  };
-
-  const addCoins = (coins: number) => {
-    dispatch({ type: 'addCoins', payload: coins });
-  };
-
-  const updateStatistics = (difficulty: GameDifficultyType, time: number, moves: number) => {
-    dispatch({ type: 'updateStatistics', payload: { difficulty, time, moves } });
   };
 
   const purchaseTheme = (theme: GameThemesType) => {
@@ -24,6 +19,23 @@ export function useApp() {
 
   const setActiveTheme = (theme: GameThemesType) => {
     dispatch({ type: 'setActiveTheme', payload: theme });
+  };
+
+  const handleWin = (result: WinResultInterface) => {
+    play('win');
+    const coinsForWin = GAME_DIFFICULTIES[result.difficulty].coins;
+    dispatch({ type: 'addCoins', payload: coinsForWin });
+    dispatch({
+      type: 'updateStatistics',
+      payload: { difficulty: result.difficulty, time: result.time, moves: result.moves },
+    });
+  };
+
+  const handleMusicVolumeChange = (volume: number) => setMusicVolume(volume);
+  const handleSfxVolumeChange = (volume: number) => setSfxVolume(volume);
+
+  const clearStatistics = () => {
+    dispatch({ type: 'clearStatistics' });
   };
 
   useEffect(() => {
@@ -36,7 +48,7 @@ export function useApp() {
   useEffect(() => {
     const handlePopState = () => {
       const pathScreen = window.location.pathname.replace('/', '') as ScreenType;
-      const validScreens: ScreenType[] = ['menu', 'game', 'store'];
+      const validScreens: ScreenType[] = ['menu', 'game', 'store', 'settings', 'statistics'];
 
       if (validScreens.includes(pathScreen)) {
         changeScreen(pathScreen);
@@ -50,14 +62,30 @@ export function useApp() {
   }, []);
 
   useEffect(() => {
+    const saved = localStorage.getItem('savedAppState');
+    const currentData = saved ? JSON.parse(saved) : {};
+
     localStorage.setItem(
       'savedAppState',
       JSON.stringify({
         ...state,
+        musicVolume: currentData.musicVolume,
+        sfxVolume: currentData.sfxVolume,
         purchasedThemes: [...state.purchasedThemes],
       })
     );
   }, [state]);
 
-  return { state, changeScreen, addCoins, updateStatistics, purchaseTheme, setActiveTheme };
+  return {
+    state,
+    changeScreen,
+    handleWin,
+    clearStatistics,
+    musicVolume,
+    handleMusicVolumeChange,
+    sfxVolume,
+    handleSfxVolumeChange,
+    purchaseTheme,
+    setActiveTheme,
+  };
 }

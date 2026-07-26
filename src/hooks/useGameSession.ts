@@ -56,7 +56,6 @@ export function useGameSession(theme: GameThemesType, onWin: (result: WinResultI
     return () => clearInterval(timer);
   }, [state.status]);
 
-  //Сохранение данных в localStorage
   useEffect(() => {
     localStorage.setItem(
       'savedGameState',
@@ -67,7 +66,6 @@ export function useGameSession(theme: GameThemesType, onWin: (result: WinResultI
     );
   }, [state]);
 
-  //Отслеживание победы и добавление монет в этот момент
   useEffect(() => {
     if (state.status !== 'win') return;
     if (state.rewardGiven) return;

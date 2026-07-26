@@ -5,8 +5,7 @@ export const initialState: AppState = {
   screen: 'menu',
   coins: 500,
   purchasedThemes: new Set<GameThemesType>(['fruits']),
-  activeTheme: 'space',
-  volume: 70,
+  activeTheme: 'fruits',
   statistics: {
     easy: { bestTime: null, bestMoves: null, totalWins: 0 },
     medium: { bestTime: null, bestMoves: null, totalWins: 0 },
@@ -70,6 +69,16 @@ export function AppReducer(state: AppState, action: AppActions): AppState {
             bestMoves: current.bestMoves === null ? moves : Math.min(current.bestMoves, moves),
             totalWins: current.totalWins + 1,
           },
+        },
+      };
+    }
+    case 'clearStatistics': {
+      return {
+        ...state,
+        statistics: {
+          easy: { bestTime: null, bestMoves: null, totalWins: 0 },
+          medium: { bestTime: null, bestMoves: null, totalWins: 0 },
+          hard: { bestTime: null, bestMoves: null, totalWins: 0 },
         },
       };
     }

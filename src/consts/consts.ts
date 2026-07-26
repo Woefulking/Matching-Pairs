@@ -1,29 +1,24 @@
-//Difficulties params
 export const GAME_DIFFICULTIES = {
   easy: {
     label: 'Easy',
     time: 60,
     pairsCount: 4,
     coins: 30,
-    cardWidth: '160px',
   },
   medium: {
     label: 'Medium',
     time: 45,
     pairsCount: 6,
     coins: 60,
-    cardWidth: '150px',
   },
   hard: {
     label: 'Hard',
     time: 30,
     pairsCount: 8,
     coins: 90,
-    cardWidth: '130px',
   },
 } as const;
 
-//Game Themes
 export const GAME_THEMES = {
   fruits: {
     label: 'Fruits',
