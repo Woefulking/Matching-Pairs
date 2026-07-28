@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react';
 import { Logo } from './components/Logo';
 import { MenuButton } from './components/MenuButton';
 
@@ -10,10 +11,33 @@ interface MenuProps {
 
 export const Menu = (props: MenuProps) => {
   const { onPlay, onOpenStore, onOpenSettings, onOpenStatistics } = props;
+
+  const logoRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (!logoRef.current || !menuRef.current) return;
+
+    logoRef.current.animate(
+      [{ transform: 'translateY(-100vh)' }, { transform: 'translateY(0px)' }],
+      {
+        duration: 500,
+        delay: 100,
+        easing: 'ease-out',
+        fill: 'backwards',
+      }
+    );
+
+    menuRef.current.animate(
+      [{ transform: 'translateY(100vh)' }, { transform: 'translateY(0px)' }],
+      { duration: 500, delay: 150, easing: 'ease-out', fill: 'backwards' }
+    );
+  }, []);
+
   return (
     <div className="flex flex-col items-center gap-8 md:gap-12 xl:gap-16">
-      <Logo />
-      <div className="flex w-full flex-col items-center gap-2 lg:gap-3">
+      <Logo ref={logoRef} />
+      <div ref={menuRef} className="flex w-full flex-col items-center gap-2 lg:gap-3">
         <MenuButton
           className="button button-blue xl:text-8 min-w-30 px-2 py-0 text-lg md:max-w-70 md:min-w-36 md:text-2xl lg:min-w-50 lg:px-4 lg:py-1 lg:text-3xl xl:min-w-62 xl:py-2 2xl:min-w-70"
           onClick={onPlay}

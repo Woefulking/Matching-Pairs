@@ -1,6 +1,6 @@
 import type { GAME_DIFFICULTIES, GAME_THEMES } from '../consts/consts';
 
-export type ScreenType = 'menu' | 'game' | 'settings' | 'store' | 'statistics';
+export type ScreenType = 'splash' | 'menu' | 'game' | 'settings' | 'store' | 'statistics';
 export type GameStatusType = 'idle' | 'preparing' | 'dealing' | 'playing' | 'win' | 'loss';
 
 export type ComparisonResult = null | 'match' | 'mismatch';

@@ -210,8 +210,24 @@
   }
 
   .animate-float-diagonal {
-    animation-name: floatDiagonal;
-    animation-timing-function: linear;
+    position: absolute;
+    top: 110%;
+    transform: rotate(var(--anim-rotate));
+    animation-name: floatUp;
+    animation-delay: var(--anim-delay);
+    animation-duration: var(--anim-duration);
     animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    will-change: transform;
+  }
+
+  @keyframes floatUp {
+    0% {
+      transform: translateY(0) rotate(var(--anim-rotate));
+    }
+
+    100% {
+      transform: translateY(-120vh) rotate(var(--anim-rotate));
+    }
   }
 }

@@ -1,9 +1,13 @@
+import { forwardRef } from 'react';
 import { ALL_BACK_IMAGES, LOGO_WORDS } from '../consts/consts';
 import { LogoCard } from './LogoCard';
 
-export const Logo = () => {
+export const Logo = forwardRef<HTMLDivElement>((_, ref) => {
   return (
-    <div className="flex w-full flex-row items-center justify-center gap-4 md:gap-4 lg:gap-6 xl:gap-10">
+    <div
+      ref={ref}
+      className="flex w-full flex-row items-center justify-center gap-4 md:gap-4 lg:gap-6 xl:gap-10"
+    >
       {LOGO_WORDS.map((word, index) => (
         <div key={index} className="flex flex-row gap-1 md:gap-1.5 lg:gap-2">
           {word.map((letter, letterIndex) => (
@@ -15,4 +19,4 @@ export const Logo = () => {
       ))}
     </div>
   );
-};
+});

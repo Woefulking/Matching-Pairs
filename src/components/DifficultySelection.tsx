@@ -32,7 +32,8 @@ export const DifficultySelection = ({ onStartRound }: DifficultySelectionProps) 
                   : ''
               }`}
               onClick={() => {
-                if (window.matchMedia('(max-width: 1536px)').matches) {
+                const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+                if (isTouchDevice) {
                   setDifficulty(item);
                 } else {
                   onStartRound(item);
@@ -53,7 +54,7 @@ export const DifficultySelection = ({ onStartRound }: DifficultySelectionProps) 
             <span className="text-center text-emerald-400">{`Total Cards: ${difficutlyParams.pairsCount * 2}`}</span>
             <span className="text-center text-amber-400">{`Coins for win: ${difficutlyParams.coins}`}</span>
           </div>
-          {window.matchMedia('(max-width: 1536px)').matches && (
+          {window.matchMedia('(pointer: coarse)').matches && (
             <MenuButton
               type="button"
               className="button button-green xl:text-8 min-w-30 px-2 py-0 text-lg transition-all duration-200 md:max-w-70 md:min-w-36 md:text-2xl lg:min-w-50 lg:px-4 lg:py-1 lg:text-3xl xl:min-w-62 xl:py-2 2xl:min-w-70"

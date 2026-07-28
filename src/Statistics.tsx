@@ -7,11 +7,22 @@ import { Modal } from './components/Modal';
 interface StatisticsProps {
   statistics: Record<GameDifficultyType, StatisticsInterface>;
   onClearStatistics: () => void;
+  onBack: () => void;
 }
-export const Statistics = ({ statistics, onClearStatistics }: StatisticsProps) => {
+export const Statistics = ({ statistics, onClearStatistics, onBack }: StatisticsProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (
     <>
+      <MenuButton
+        className="transparent absolute top-0 left-4 flex h-12 w-10 min-w-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:top-4 md:h-14 md:w-14 lg:hover:scale-110 xl:top-10"
+        onClick={onBack}
+      >
+        <img
+          src="./src/assets/arrow.png"
+          alt="back"
+          className="pixelated h-full w-full object-contain md:h-auto"
+        />
+      </MenuButton>
       <div className="flex w-full flex-col items-center justify-start gap-3 select-none md:gap-6">
         <Header value="Statistics" />
         <div className="mx-auto flex w-full max-w-full flex-row justify-center gap-3 overflow-x-auto overflow-y-hidden pb-2 lg:gap-4 lg:overflow-visible lg:pb-0">

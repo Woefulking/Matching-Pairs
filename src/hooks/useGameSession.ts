@@ -33,6 +33,7 @@ export function useGameSession(theme: GameThemesType, onWin: (result: WinResultI
     if (state.matchedCards.has(card.name)) return;
 
     if (state.selectedCards.firstCard && state.selectedCards.secondCard) return;
+    play('cardClick');
     dispatch({ type: 'selectCard', payload: card });
   };
 
@@ -45,7 +46,11 @@ export function useGameSession(theme: GameThemesType, onWin: (result: WinResultI
     dispatch({ type: 'collectReward' });
   };
 
-  //Таймер
+  const clearRoundState = () => {
+    dispatch({ type: 'clear' });
+    localStorage.removeItem('savedGameState');
+  };
+
   useEffect(() => {
     if (state.status !== 'playing') return;
 
@@ -84,12 +89,13 @@ export function useGameSession(theme: GameThemesType, onWin: (result: WinResultI
     play('lose');
   }, [state.status, play]);
 
-  useEffect(() => {
-    return () => {
-      localStorage.removeItem('savedGameState');
-      dispatch({ type: 'clear' });
-    };
-  }, []);
-
-  return { state, startRound, setGameStatus, cardClick, resolveTurn, collectReward };
+  return {
+    state,
+    startRound,
+    setGameStatus,
+    cardClick,
+    resolveTurn,
+    collectReward,
+    clearRoundState,
+  };
 }

@@ -2,10 +2,10 @@ import { GAME_THEMES } from '../consts/consts';
 import type { AppActions, AppState, GameThemesType } from '../types/types';
 
 export const initialState: AppState = {
-  screen: 'menu',
+  screen: 'splash',
   coins: 500,
   purchasedThemes: new Set<GameThemesType>(['fruits']),
-  activeTheme: 'fruits',
+  activeTheme: 'egypt',
   statistics: {
     easy: { bestTime: null, bestMoves: null, totalWins: 0 },
     medium: { bestTime: null, bestMoves: null, totalWins: 0 },

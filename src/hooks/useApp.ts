@@ -48,7 +48,14 @@ export function useApp() {
   useEffect(() => {
     const handlePopState = () => {
       const pathScreen = window.location.pathname.replace('/', '') as ScreenType;
-      const validScreens: ScreenType[] = ['menu', 'game', 'store', 'settings', 'statistics'];
+      const validScreens: ScreenType[] = [
+        'menu',
+        'game',
+        'store',
+        'settings',
+        'statistics',
+        'splash',
+      ];
 
       if (validScreens.includes(pathScreen)) {
         changeScreen(pathScreen);
@@ -62,19 +69,16 @@ export function useApp() {
   }, []);
 
   useEffect(() => {
-    const saved = localStorage.getItem('savedAppState');
-    const currentData = saved ? JSON.parse(saved) : {};
-
     localStorage.setItem(
       'savedAppState',
       JSON.stringify({
         ...state,
-        musicVolume: currentData.musicVolume,
-        sfxVolume: currentData.sfxVolume,
+        musicVolume,
+        sfxVolume,
         purchasedThemes: [...state.purchasedThemes],
       })
     );
-  }, [state]);
+  }, [musicVolume, sfxVolume, state]);
 
   return {
     state,
@@ -85,6 +89,7 @@ export function useApp() {
     handleMusicVolumeChange,
     sfxVolume,
     handleSfxVolumeChange,
+    play,
     purchaseTheme,
     setActiveTheme,
   };

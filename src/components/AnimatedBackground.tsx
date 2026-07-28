@@ -15,14 +15,15 @@ export const AnimatedBackground = ({ children, isCompact }: AnimatedBackgroundPr
             key={index}
             src={ALL_BACK_IMAGES[card.themeIdx]}
             alt=""
-            className="pixelated animate-float-diagonal absolute h-20 w-14 opacity-80"
-            style={{
-              left: card.left,
-              animationDelay: card.delay,
-              animationDuration: card.speed,
-              top: '110%',
-              rotate: card.rotate,
-            }}
+            className="pixelated animate-float-diagonal absolute h-20 w-14 opacity-80 will-change-transform"
+            style={
+              {
+                left: card.left,
+                '--anim-delay': card.delay,
+                '--anim-duration': card.speed,
+                '--anim-rotate': card.rotate,
+              } as React.CSSProperties
+            }
           />
         ))}
       </div>
