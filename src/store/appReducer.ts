@@ -3,9 +3,9 @@ import type { AppActions, AppState, GameThemesType } from '../types/types';
 
 export const initialState: AppState = {
   screen: 'splash',
-  coins: 500,
+  coins: 0,
   purchasedThemes: new Set<GameThemesType>(['fruits']),
-  activeTheme: 'egypt',
+  activeTheme: 'fruits',
   statistics: {
     easy: { bestTime: null, bestMoves: null, totalWins: 0 },
     medium: { bestTime: null, bestMoves: null, totalWins: 0 },

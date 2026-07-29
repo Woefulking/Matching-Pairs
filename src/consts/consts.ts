@@ -1,21 +1,21 @@
 export const GAME_DIFFICULTIES = {
   easy: {
     label: 'Easy',
-    time: 60,
+    time: 30,
     pairsCount: 4,
-    coins: 30,
+    coins: 20,
   },
   medium: {
     label: 'Medium',
-    time: 45,
+    time: 50,
     pairsCount: 6,
-    coins: 60,
+    coins: 50,
   },
   hard: {
     label: 'Hard',
-    time: 1,
+    time: 80,
     pairsCount: 8,
-    coins: 90,
+    coins: 100,
   },
 } as const;
 
@@ -39,7 +39,7 @@ export const GAME_THEMES = {
   },
   ocean: {
     label: 'Ocean',
-    price: 120,
+    price: 150,
     frontImage: './src/assets/themes/ocean/frontImage.png',
     backImage: './src/assets/themes/ocean/backImage.png',
     deck: './src/assets/themes/ocean/deck.png',
@@ -56,7 +56,7 @@ export const GAME_THEMES = {
   },
   space: {
     label: 'Space',
-    price: 90,
+    price: 400,
     frontImage: './src/assets/themes/space/frontImage.png',
     backImage: './src/assets/themes/space/backImage.png',
     deck: './src/assets/themes/space/deck.png',
@@ -73,7 +73,7 @@ export const GAME_THEMES = {
   },
   egypt: {
     label: 'Egypt',
-    price: 120,
+    price: 1000,
     frontImage: './src/assets/themes/egypt/frontImage.png',
     backImage: './src/assets/themes/egypt/backImage.png',
     deck: './src/assets/themes/egypt/deck.png',
