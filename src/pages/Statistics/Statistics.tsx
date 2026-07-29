@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { Header } from './components/Header';
-import { MenuButton } from './components/MenuButton';
-import type { GameDifficultyType, StatisticsInterface } from './types/types';
-import { Modal } from './components/Modal';
+import { Header } from 'components/Header';
+import { MenuButton } from 'components/MenuButton';
+import type { GameDifficultyType, StatisticsInterface } from 'types/types';
+import { Modal } from 'components/Modal';
+import Arrow from 'assets/general/arrow.png';
+import Trophy from 'assets/general/trophy.png';
+import SandClock from 'assets/general/sandClock.png';
+import Moves from 'assets/general/moves.png';
 
 interface StatisticsProps {
   statistics: Record<GameDifficultyType, StatisticsInterface>;
@@ -17,11 +21,7 @@ export const Statistics = ({ statistics, onClearStatistics, onBack }: Statistics
         className="transparent absolute top-0 left-4 flex h-12 w-10 min-w-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:top-4 md:h-14 md:w-14 lg:hover:scale-110 xl:top-10"
         onClick={onBack}
       >
-        <img
-          src="./src/assets/arrow.png"
-          alt="back"
-          className="pixelated h-full w-full object-contain md:h-auto"
-        />
+        <img src={Arrow} alt="back" className="pixelated h-full w-full object-contain md:h-auto" />
       </MenuButton>
       <div className="flex w-full flex-col items-center justify-start gap-3 select-none md:gap-6">
         <Header value="Statistics" />
@@ -40,33 +40,21 @@ export const Statistics = ({ statistics, onClearStatistics, onBack }: Statistics
                 </h2>
                 <div className="text-md flex w-full flex-col gap-2 px-1 font-medium text-white md:text-base lg:text-xl xl:text-2xl">
                   <div className="flex flex-row items-center gap-2">
-                    <img
-                      src="./src/assets/trophy.png"
-                      className="pixelated h-5 w-5 md:h-6 md:w-6"
-                      alt=""
-                    />
+                    <img src={Trophy} className="pixelated h-5 w-5 md:h-6 md:w-6" alt="Trophy" />
                     <div className="flex w-full flex-row justify-between">
                       <span className="text-slate-400">Wins:</span>
                       <span className="font-bold text-emerald-400">{totalWins}</span>
                     </div>
                   </div>
                   <div className="flex flex-row items-center gap-2">
-                    <img
-                      src="./src/assets/sandClock.png"
-                      className="pixelated h-5 w-5 md:h-6 md:w-6"
-                      alt=""
-                    />
+                    <img src={SandClock} className="pixelated h-5 w-5 md:h-6 md:w-6" alt="time" />
                     <div className="flex w-full flex-row justify-between">
                       <span className="text-slate-400">Best Time:</span>
                       <span className="font-bold text-sky-400">{bestTime}</span>
                     </div>
                   </div>
                   <div className="flex flex-row items-center gap-2">
-                    <img
-                      src="./src/assets/moves.png"
-                      className="pixelated h-5 w-5 md:h-6 md:w-6"
-                      alt=""
-                    />
+                    <img src={Moves} className="pixelated h-5 w-5 md:h-6 md:w-6" alt="moves" />
                     <div className="flex w-full flex-row justify-between">
                       <span className="text-slate-400">Best Moves:</span>
                       <span className="font-bold text-amber-400">{bestMoves}</span>

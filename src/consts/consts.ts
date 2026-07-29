@@ -110,15 +110,3 @@ export const LOGO_WORDS = [
 export const BACKGROUND_CARDS_COUNT = 60;
 export const ALL_THEMES = Object.entries(GAME_THEMES);
 export const ALL_BACK_IMAGES = Object.values(GAME_THEMES).map((theme) => theme.backImage);
-
-export const BACKGROUND_CARDS = Array.from({ length: BACKGROUND_CARDS_COUNT }).map((_, index) => {
-  const calculatedDelay = index * 2 + Math.random() * 2;
-
-  return {
-    left: `${Math.floor(Math.random() * 90)}%`,
-    delay: `${calculatedDelay}s`,
-    speed: `${Math.floor(Math.random() * 10) + 25}s`,
-    rotate: `${Math.floor(Math.random() * -40) + 25}deg`,
-    themeIdx: Math.floor(Math.random() * ALL_BACK_IMAGES.length),
-  };
-});

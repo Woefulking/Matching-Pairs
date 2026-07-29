@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { GAME_DIFFICULTIES } from '../consts/consts';
-import type { GameDifficultyType } from '../types/types';
-import { MenuButton } from './MenuButton';
-import { Header } from './Header';
+import { GAME_DIFFICULTIES } from 'consts/consts';
+import type { GameDifficultyType } from 'types/types';
+import { MenuButton } from 'components/MenuButton';
+import { Header } from 'components/Header';
 
 interface DifficultySelectionProps {
   onStartRound: (difficulty: GameDifficultyType) => void;

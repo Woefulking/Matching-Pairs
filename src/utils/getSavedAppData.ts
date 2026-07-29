@@ -1,5 +1,5 @@
-import { initialState } from '../reducers/appReducer';
-import type { AppState, GameThemesType, ScreenType } from '../types/types';
+import { initialState } from '../store/appReducer';
+import type { AppState, GameThemesType } from '../types/types';
 
 export const getSavedAppData = (): AppState => {
   try {
@@ -10,21 +10,9 @@ export const getSavedAppData = (): AppState => {
       purchasedThemes: GameThemesType[];
     };
 
-    const path = window.location.pathname.replace('/', '');
-    const screen: ScreenType = [
-      'menu',
-      'game',
-      'store',
-      'settings',
-      'statistics',
-      'splash',
-    ].includes(path)
-      ? (path as ScreenType)
-      : 'menu';
-
     return {
       ...parsedState,
-      screen,
+      screen: 'splash',
       purchasedThemes: new Set(parsedState.purchasedThemes),
     };
   } catch {

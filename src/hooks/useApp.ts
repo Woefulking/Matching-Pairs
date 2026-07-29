@@ -1,13 +1,14 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import { getSavedAppData } from '../utils/getSavedAppData';
 import type { GameThemesType, ScreenType, WinResultInterface } from '../types/types';
-import { AppReducer, initialState } from '../reducers/appReducer';
+import { AppReducer, initialState } from '../store/appReducer';
 import { GAME_DIFFICULTIES } from 'src/consts/consts';
 import { useAudio } from './useAudio/useAudio';
 
 export function useApp() {
   const [state, dispatch] = useReducer(AppReducer, initialState, getSavedAppData);
   const { play, musicVolume, setMusicVolume, sfxVolume, setSfxVolume } = useAudio();
+  const isFirstMenuLaunch = useRef<boolean>(true);
 
   const changeScreen = (screen: ScreenType) => {
     dispatch({ type: 'changeScreen', payload: screen });
@@ -82,6 +83,7 @@ export function useApp() {
 
   return {
     state,
+    isFirstMenuLaunch,
     changeScreen,
     handleWin,
     clearStatistics,

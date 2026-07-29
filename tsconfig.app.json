@@ -27,7 +27,12 @@
 
     "paths": {
       "src/*": ["./src/*"],
-      "assets/*": ["./src/assets/*"]
+      "assets/*": ["./src/assets/*"],
+      "types/*": ["./src/types/*"],
+      "components/*": ["./src/components/*"],
+      "consts/*": ["./src/consts/*"],
+      "utils/*": ["./src/utils/*"],
+      "hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src"]

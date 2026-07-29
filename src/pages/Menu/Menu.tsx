@@ -1,21 +1,21 @@
-import { useLayoutEffect, useRef } from 'react';
-import { Logo } from './components/Logo';
-import { MenuButton } from './components/MenuButton';
+import { useLayoutEffect, useRef, type RefObject } from 'react';
+import { Logo } from './Logo';
+import { MenuButton } from 'components/MenuButton';
 
 interface MenuProps {
+  ref: RefObject<boolean>;
   onPlay: () => void;
   onOpenStore: () => void;
   onOpenSettings: () => void;
   onOpenStatistics: () => void;
 }
 
-export const Menu = (props: MenuProps) => {
-  const { onPlay, onOpenStore, onOpenSettings, onOpenStatistics } = props;
-
+export const Menu = ({ ref, onPlay, onOpenStore, onOpenSettings, onOpenStatistics }: MenuProps) => {
   const logoRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
+    if (!ref.current) return;
     if (!logoRef.current || !menuRef.current) return;
 
     logoRef.current.animate(
@@ -32,7 +32,9 @@ export const Menu = (props: MenuProps) => {
       [{ transform: 'translateY(100vh)' }, { transform: 'translateY(0px)' }],
       { duration: 500, delay: 150, easing: 'ease-out', fill: 'backwards' }
     );
-  }, []);
+
+    ref.current = false;
+  }, [ref]);
 
   return (
     <div className="flex flex-col items-center gap-8 md:gap-12 xl:gap-16">

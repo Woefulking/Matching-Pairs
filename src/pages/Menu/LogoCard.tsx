@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
-import { getRandomDelay, getRandomImage } from '../utils/random';
+import { getRandomDelay, getRandomImage } from 'utils/random';
 
 interface LogoCardProps {
   letter: string;
   allImages: string[];
+  initialFront: string;
+  initialBack: string;
 }
 
-export const LogoCard = ({ letter, allImages }: LogoCardProps) => {
+export const LogoCard = ({ letter, allImages, initialFront, initialBack }: LogoCardProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [delay, setDelay] = useState<number>(() => getRandomDelay());
 
-  const [frontImage, setFrontImage] = useState<string>(() => getRandomImage(allImages));
-  const [backImage, setBackImage] = useState<string>(() => getRandomImage(allImages));
+  const [frontImage, setFrontImage] = useState<string>(initialFront);
+  const [backImage, setBackImage] = useState<string>(initialBack);
 
   useEffect(() => {
     const timer = setTimeout(() => {

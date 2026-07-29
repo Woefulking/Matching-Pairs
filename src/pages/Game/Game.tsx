@@ -1,12 +1,13 @@
-import { DifficultySelection } from './components/DifficultySelection';
-import { GAME_DIFFICULTIES, GAME_THEMES } from './consts/consts';
+import { GAME_THEMES } from 'consts/consts';
 import { useGameSession } from './hooks/useGameSession';
-import { type CardType, type GameThemesType, type WinResultInterface } from './types/types';
-import { GameHub } from './components/GameHub';
-import { GameField } from './components/GameField';
-import { MenuButton } from './components/MenuButton';
-import { Modal } from './components/Modal';
+import { type CardType, type GameThemesType, type WinResultInterface } from 'types/types';
+import { MenuButton } from 'components/MenuButton';
+import { Modal } from 'components/Modal';
 import { useState } from 'react';
+import { DifficultySelection } from './DifficultySelection';
+import { GameHub } from './GameHub';
+import { GameField } from './GameField';
+import Arrow from 'assets/general/arrow.png';
 
 interface GameProps {
   theme: GameThemesType;
@@ -21,7 +22,6 @@ export const Game = ({ theme, coins, onWin, onBack }: GameProps) => {
 
   const { firstCard, secondCard } = state.selectedCards;
 
-  const difficultySettings = GAME_DIFFICULTIES[state.difficulty];
   const currentTheme = GAME_THEMES[theme];
 
   const isIdle = state.status === 'idle';
@@ -57,11 +57,7 @@ export const Game = ({ theme, coins, onWin, onBack }: GameProps) => {
         className="transparent absolute top-0 left-4 flex h-12 w-10 min-w-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:top-4 md:h-14 md:w-14 lg:hover:scale-110 xl:top-10"
         onClick={() => handleBackToMenu()}
       >
-        <img
-          src="./src/assets/arrow.png"
-          alt="back"
-          className="pixelated h-full w-full object-contain md:h-auto"
-        />
+        <img src={Arrow} alt="back" className="pixelated h-full w-full object-contain md:h-auto" />
       </MenuButton>
       {isIdle ? (
         <DifficultySelection onStartRound={startRound} />
@@ -82,7 +78,6 @@ export const Game = ({ theme, coins, onWin, onBack }: GameProps) => {
             secondCard={secondCard}
             matchedCards={state.matchedCards}
             comparisonResult={comparisonResult}
-            diffuculty={difficultySettings}
             currentTheme={currentTheme}
             isLoose={isLoose}
             onAnimationEnd={setGameStatus}

@@ -1,15 +1,11 @@
-import { Menu } from './Menu';
-import { Game } from './Game';
+import { AnimatedBackground } from 'components/AnimatedBackground';
 import { useApp } from './hooks/useApp';
-import { Store } from './Store';
-import { Settings } from './Settings';
-import { AnimatedBackground } from './components/AnimatedBackground';
-import { Statistics } from './Statistics';
-import { SplashScreen } from './SplashScreen';
+import { Game, Menu, Settings, SplashScreen, Statistics, Store } from './pages';
 
 function App() {
   const {
     state,
+    isFirstMenuLaunch,
     changeScreen,
     handleWin,
     clearStatistics,
@@ -24,7 +20,6 @@ function App() {
 
   //TODO
   //Разобраться в файлах и переложить все по папочкам
-  //Сделать анимацию появления названия игры сверху, а меню снизу
 
   function getCurrentScreen() {
     switch (state.screen) {
@@ -40,6 +35,7 @@ function App() {
       case 'menu':
         return (
           <Menu
+            ref={isFirstMenuLaunch}
             onPlay={() => changeScreen('game')}
             onOpenStore={() => changeScreen('store')}
             onOpenSettings={() => changeScreen('settings')}

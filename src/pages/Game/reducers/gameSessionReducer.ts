@@ -1,5 +1,5 @@
-import { GAME_DIFFICULTIES } from '../consts/consts';
-import type { GameSessionActions, GameSessionState } from '../types/types';
+import { GAME_DIFFICULTIES } from 'consts/consts';
+import type { GameSessionActions, GameSessionState } from 'types/types';
 
 export const initialState: GameSessionState = {
   status: 'idle',

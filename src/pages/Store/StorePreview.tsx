@@ -1,11 +1,14 @@
-import { GAME_THEMES } from '../consts/consts';
-import type { GameThemesType } from '../types/types';
-import { MenuButton } from './MenuButton';
-import { Modal } from './Modal';
+import { GAME_THEMES } from 'consts/consts';
+import type { GameThemesType } from 'types/types';
+import { MenuButton } from 'components/MenuButton';
+import { Modal } from 'components/Modal';
+
+import Close from 'assets/general/close.png';
+import Arrow from 'assets/general/arrow.png';
 
 interface StorePreviewProps {
   theme: GameThemesType;
-  getPreviewDeck: () => { src: string; position: number }[];
+  getPreviewDeck: () => { name: string; src: string; position: number }[];
   onPrev: () => void;
   onNext: () => void;
   onClose: () => void;
@@ -26,8 +29,8 @@ export const StorePreview = ({
           onClick={onClose}
         >
           <img
-            src="./src/assets/cancel.png"
-            alt="back"
+            src={Close}
+            alt="close"
             className="pixelated h-full w-full object-contain md:h-auto"
           />
         </MenuButton>
@@ -38,8 +41,8 @@ export const StorePreview = ({
           onClick={onPrev}
         >
           <img
-            src="./src/assets/arrow.png"
-            alt="back"
+            src={Arrow}
+            alt="last"
             className="pixelated h-full w-full object-contain md:h-auto"
           />
         </MenuButton>
@@ -60,6 +63,7 @@ export const StorePreview = ({
                   <img
                     src={GAME_THEMES[theme].frontImage}
                     className="pixelated absolute inset-0 h-full w-full"
+                    alt={card.name}
                   />
                   <img className="pixelated inset-0 z-10 w-[80%]" src={card.src} alt="" />
                 </div>
@@ -73,8 +77,8 @@ export const StorePreview = ({
           onClick={onNext}
         >
           <img
-            src="./src/assets/arrow.png"
-            alt="back"
+            src={Arrow}
+            alt="next"
             className="pixelated h-full w-full rotate-180 object-contain md:h-auto"
           />
         </MenuButton>

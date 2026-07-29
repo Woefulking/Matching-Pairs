@@ -30,15 +30,15 @@ interface AudioMapItem {
 export const AudioProvider = ({ children }: { children: ReactNode }) => {
   const [musicVolume, setMusicVolume] = useState<number>(() => {
     const saved = localStorage.getItem('savedAppState');
-    if (!saved) return 50;
+    if (!saved) return 20;
     const parsed = JSON.parse(saved);
-    return typeof parsed.musicVolume === 'number' ? parsed.musicVolume : 50;
+    return +parsed.musicVolume;
   });
   const [sfxVolume, setSfxVolume] = useState<number>(() => {
     const saved = localStorage.getItem('savedAppState');
     if (!saved) return 50;
     const parsed = JSON.parse(saved);
-    return typeof parsed.sfxVolume === 'number' ? parsed.sfxVolume : 50;
+    return +parsed.sfxVolume;
   });
 
   const audioMapRef = useRef<Record<string, AudioMapItem>>({});

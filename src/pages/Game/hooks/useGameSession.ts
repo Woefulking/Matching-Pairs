@@ -5,12 +5,12 @@ import {
   type GameStatusType,
   type GameThemesType,
   type WinResultInterface,
-} from '../types/types';
-import { getSavedState } from '../utils/getSavedGameData';
-import { generateGameDeck } from '../utils/generateDeck';
-import { GAME_DIFFICULTIES, GAME_THEMES } from '../consts/consts';
+} from 'types/types';
+import { getSavedState } from 'utils/getSavedGameData';
+import { generateGameDeck } from 'utils/generateDeck';
+import { GAME_DIFFICULTIES, GAME_THEMES } from 'consts/consts';
+import { useAudio } from 'hooks/useAudio/useAudio';
 import { GameSessionReducer, initialState } from '../reducers/gameSessionReducer';
-import { useAudio } from './useAudio/useAudio';
 
 export function useGameSession(theme: GameThemesType, onWin: (result: WinResultInterface) => void) {
   const { play } = useAudio();

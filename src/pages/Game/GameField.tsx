@@ -1,11 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-import type {
-  CardType,
-  ComparisonResult,
-  GameDifficultySettings,
-  GameStatusType,
-  GameThemesSettings,
-} from '../types/types';
+import type { CardType, ComparisonResult, GameStatusType, GameThemesSettings } from 'types/types';
 import { Card } from './Card';
 import { useAudio } from 'src/hooks/useAudio/useAudio';
 
@@ -16,7 +10,6 @@ interface GameFieldProps {
   secondCard: CardType | null;
   matchedCards: Set<string>;
   comparisonResult: ComparisonResult;
-  diffuculty: GameDifficultySettings;
   currentTheme: GameThemesSettings;
   isLoose: boolean;
   onAnimationEnd: (status: GameStatusType) => void;

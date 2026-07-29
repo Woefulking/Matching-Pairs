@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { GAME_THEMES } from '../consts/consts';
-import type { GameThemesType } from '../types/types';
-import { formatTime } from '../utils/formatTime';
-import { MenuButton } from './MenuButton';
+import { GAME_THEMES } from 'consts/consts';
+import type { GameThemesType } from 'types/types';
+import { formatTime } from 'utils/formatTime';
+import { MenuButton } from 'components/MenuButton';
+import SandClock from 'assets/general/sandClock.png';
+import Moves from 'assets/general/moves.png';
+import Coins from 'assets/general/coin.png';
 
 interface GameHubProps {
   totalCoins: number;
@@ -45,7 +48,7 @@ export const GameHub = ({
         <div className="flex flex-row items-center gap-2 border-b border-white/5 pb-1 lg:pb-2">
           <img
             className="pixelated h-5 w-5 md:h-6 md:w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12"
-            src="./src/assets/sandClock.png"
+            src={SandClock}
             alt="Timer"
           />
           <div className="flex w-full flex-row items-center justify-between">
@@ -62,7 +65,7 @@ export const GameHub = ({
         <div className="flex flex-row items-center gap-2 border-b border-white/5 pb-1 lg:pb-2">
           <img
             className="pixelated h-5 w-5 md:h-6 md:w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12"
-            src="./src/assets/moves.png"
+            src={Moves}
             alt="Moves"
           />
           <div className="flex w-full flex-row items-center justify-between">
@@ -88,7 +91,7 @@ export const GameHub = ({
         <div className="flex flex-row items-center gap-2">
           <img
             className="pixelated h-5 w-5 md:h-6 md:w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12"
-            src="./src/assets/coin.png"
+            src={Coins}
             alt="Coins"
           />
           <div className="flex w-full flex-row items-center justify-between">
