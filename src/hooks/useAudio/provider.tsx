@@ -3,14 +3,14 @@ import type { SoundType } from 'src/types/types';
 import { AudioContext } from './context';
 
 const soundConfig = {
-  menuClick: { src: '/assets/sounds/menuClick', type: 'sfx' },
-  cardClick: { src: '/assets/sounds/cardClick', type: 'sfx' },
-  match: { src: '/assets/sounds/match', type: 'sfx' },
-  mismatch: { src: '/assets/sounds/mismatch', type: 'sfx' },
-  cardShuffle: { src: '/assets/sounds/cardShuffle', type: 'sfx' },
-  win: { src: '/assets/sounds/win', type: 'sfx' },
-  lose: { src: '/assets/sounds/lose', type: 'sfx' },
-  background: { src: '/assets/sounds/background', type: 'music' },
+  menuClick: { src: '/assets/sounds/menuClick.ogg', type: 'sfx' },
+  cardClick: { src: '/assets/sounds/cardClick.ogg', type: 'sfx' },
+  match: { src: '/assets/sounds/match.ogg', type: 'sfx' },
+  mismatch: { src: '/assets/sounds/mismatch.ogg', type: 'sfx' },
+  cardShuffle: { src: '/assets/sounds/cardShuffle.ogg', type: 'sfx' },
+  win: { src: '/assets/sounds/win.ogg', type: 'sfx' },
+  lose: { src: '/assets/sounds/lose.ogg', type: 'sfx' },
+  background: { src: '/assets/sounds/background.ogg', type: 'music' },
 } satisfies Record<SoundType, { src: string; type: 'music' | 'sfx' }>;
 
 interface AudioMapItem {
