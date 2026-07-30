@@ -1,25 +1,16 @@
-import menuClick from 'assets/sounds/menuClick.ogg';
-import cardClick from 'assets/sounds/cardClick.ogg';
-import match from 'assets/sounds/match.ogg';
-import mismatch from 'assets/sounds/mismatch.ogg';
-import cardShuffle from 'assets/sounds/cardShuffle.ogg';
-import win from 'assets/sounds/win.ogg';
-import lose from 'assets/sounds/lose.ogg';
-import background from 'assets/sounds/background.ogg';
-
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { SoundType } from 'src/types/types';
 import { AudioContext } from './context';
 
 const soundConfig = {
-  menuClick: { src: menuClick, type: 'sfx' },
-  cardClick: { src: cardClick, type: 'sfx' },
-  match: { src: match, type: 'sfx' },
-  mismatch: { src: mismatch, type: 'sfx' },
-  cardShuffle: { src: cardShuffle, type: 'sfx' },
-  win: { src: win, type: 'sfx' },
-  lose: { src: lose, type: 'sfx' },
-  background: { src: background, type: 'music' },
+  menuClick: { src: '/assets/sounds/menuClick', type: 'sfx' },
+  cardClick: { src: '/assets/sounds/cardClick', type: 'sfx' },
+  match: { src: '/assets/sounds/match', type: 'sfx' },
+  mismatch: { src: '/assets/sounds/mismatch', type: 'sfx' },
+  cardShuffle: { src: '/assets/sounds/cardShuffle', type: 'sfx' },
+  win: { src: '/assets/sounds/win', type: 'sfx' },
+  lose: { src: '/assets/sounds/lose', type: 'sfx' },
+  background: { src: '/assets/sounds/background', type: 'music' },
 } satisfies Record<SoundType, { src: string; type: 'music' | 'sfx' }>;
 
 interface AudioMapItem {

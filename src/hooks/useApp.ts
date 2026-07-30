@@ -1,8 +1,8 @@
 import { useEffect, useReducer, useRef } from 'react';
-import { getSavedAppData } from '../utils/getSavedAppData';
-import type { GameThemesType, ScreenType, WinResultInterface } from '../types/types';
+import { getSavedAppData } from 'utils/getSavedAppData';
+import type { GameThemesType, ScreenType, WinResultInterface } from 'types/types';
 import { AppReducer, initialState } from '../reducers/appReducer';
-import { GAME_DIFFICULTIES } from 'src/consts/consts';
+import { GAME_DIFFICULTIES } from 'consts/consts';
 import { useAudio } from './useAudio/useAudio';
 
 export function useApp() {

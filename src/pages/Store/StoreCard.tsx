@@ -1,6 +1,3 @@
-import Coin from 'assets/general/coin.png';
-import Check from 'assets/general/check.png';
-import Eye from 'assets/general/eye.png';
 import { MenuButton } from 'components/MenuButton';
 
 interface StoreCardProps {
@@ -37,7 +34,7 @@ export const StoreCard = ({
         <div className={`flex flex-row items-center justify-center ${isThemePurchased && 'gap-2'}`}>
           <img
             className="pixelated h-8 w-8 lg:h-12 lg:w-12 2xl:h-12 2xl:w-12"
-            src={isThemePurchased ? `${Check}` : `${Coin}`}
+            src={isThemePurchased ? '/assets/general/check.png' : '/assets/general/coin.png'}
             alt={isThemePurchased ? 'Purchased' : 'Coins'}
           />
           <span
@@ -61,7 +58,11 @@ export const StoreCard = ({
             className="transparent flex h-10 w-10 min-w-0 shrink-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:h-10 md:w-10 lg:h-14 lg:w-14 lg:hover:scale-110"
             onClick={onPreviewOpen}
           >
-            <img src={Eye} alt="preview deck" className="pixelated h-full w-full object-contain" />
+            <img
+              src="/assets/general/eye.png"
+              alt="preview deck"
+              className="pixelated h-full w-full object-contain"
+            />
           </MenuButton>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
-import { useAudio } from 'src/hooks/useAudio/useAudio';
+import { useAudio } from 'hooks/useAudio/useAudio';
 
 interface MenuButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;

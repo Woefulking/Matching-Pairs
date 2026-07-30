@@ -3,9 +3,6 @@ import type { GameThemesType } from 'types/types';
 import { MenuButton } from 'components/MenuButton';
 import { Modal } from 'components/Modal';
 
-import Close from 'assets/general/close.png';
-import Arrow from 'assets/general/arrow.png';
-
 interface StorePreviewProps {
   theme: GameThemesType;
   getPreviewDeck: () => { name: string; src: string; position: number }[];
@@ -29,7 +26,7 @@ export const StorePreview = ({
           onClick={onClose}
         >
           <img
-            src={Close}
+            src="/assets/general/close.png"
             alt="close"
             className="pixelated h-full w-full object-contain md:h-auto"
           />
@@ -41,7 +38,7 @@ export const StorePreview = ({
           onClick={onPrev}
         >
           <img
-            src={Arrow}
+            src="/assets/general/arrow.png"
             alt="last"
             className="pixelated h-full w-full object-contain md:h-auto"
           />
@@ -77,7 +74,7 @@ export const StorePreview = ({
           onClick={onNext}
         >
           <img
-            src={Arrow}
+            src="/assets/general/arrow.png"
             alt="next"
             className="pixelated h-full w-full rotate-180 object-contain md:h-auto"
           />

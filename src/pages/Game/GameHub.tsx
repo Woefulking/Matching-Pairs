@@ -3,9 +3,6 @@ import { GAME_THEMES } from 'consts/consts';
 import type { GameThemesType } from 'types/types';
 import { formatTime } from 'utils/formatTime';
 import { MenuButton } from 'components/MenuButton';
-import SandClock from 'assets/general/sandClock.png';
-import Moves from 'assets/general/moves.png';
-import Coins from 'assets/general/coin.png';
 
 interface GameHubProps {
   totalCoins: number;
@@ -48,7 +45,7 @@ export const GameHub = ({
         <div className="flex flex-row items-center gap-2 border-b border-white/5 pb-1 lg:pb-2">
           <img
             className="pixelated h-5 w-5 md:h-6 md:w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12"
-            src={SandClock}
+            src="/assets/general/sandClock.png"
             alt="Timer"
           />
           <div className="flex w-full flex-row items-center justify-between">
@@ -65,7 +62,7 @@ export const GameHub = ({
         <div className="flex flex-row items-center gap-2 border-b border-white/5 pb-1 lg:pb-2">
           <img
             className="pixelated h-5 w-5 md:h-6 md:w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12"
-            src={Moves}
+            src="/assets/general/moves.png"
             alt="Moves"
           />
           <div className="flex w-full flex-row items-center justify-between">
@@ -79,7 +76,7 @@ export const GameHub = ({
           <img
             className="pixelated h-5 w-4 md:h-6 md:w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12"
             src={GAME_THEMES[theme].backImage}
-            alt=""
+            alt="pairs"
           />
           <div className="flex w-full flex-row items-center justify-between">
             <span className="font-medium text-slate-400">Pairs:</span>
@@ -91,7 +88,7 @@ export const GameHub = ({
         <div className="flex flex-row items-center gap-2">
           <img
             className="pixelated h-5 w-5 md:h-6 md:w-6 lg:h-10 lg:w-10 xl:h-12 xl:w-12"
-            src={Coins}
+            src="/assets/general/coin.png"
             alt="Coins"
           />
           <div className="flex w-full flex-row items-center justify-between">

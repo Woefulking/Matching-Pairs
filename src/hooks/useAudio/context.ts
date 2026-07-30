@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { SoundType } from 'src/types/types';
+import type { SoundType } from 'types/types';
 
 interface AudioContextType {
   musicVolume: number;

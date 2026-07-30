@@ -1,7 +1,6 @@
 import { Header } from 'components/Header';
 import { MenuButton } from 'components/MenuButton';
 import { Range } from 'components/Range';
-import Arrow from 'assets/general/arrow.png';
 
 interface SettingsProps {
   musicVolume: number;
@@ -23,7 +22,11 @@ export const Settings = ({
         className="transparent absolute top-0 left-4 flex h-12 w-10 min-w-0 items-center justify-center p-0 transition duration-500 ease-in-out active:scale-95 md:top-4 md:h-14 md:w-14 lg:hover:scale-110 xl:top-10"
         onClick={onBack}
       >
-        <img src={Arrow} alt="back" className="pixelated h-full w-full object-contain md:h-auto" />
+        <img
+          src="/assets/general/arrow.png"
+          alt="back"
+          className="pixelated h-full w-full object-contain md:h-auto"
+        />
       </MenuButton>
       <div className="flex w-full flex-col items-center justify-start gap-2 select-none md:gap-4">
         <Header value="Settings" />

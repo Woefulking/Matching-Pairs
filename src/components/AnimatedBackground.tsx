@@ -1,6 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { ALL_BACK_IMAGES, BACKGROUND_CARDS_COUNT } from '../consts/consts';
-import type { BacgroundCardItem } from 'src/types/types';
+import type { BacgroundCardItem } from 'types/types';
 
 interface AnimatedBackgroundProps {
   children: ReactNode;

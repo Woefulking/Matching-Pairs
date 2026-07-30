@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import type { CardType, ComparisonResult, GameStatusType, GameThemesSettings } from 'types/types';
 import { Card } from './Card';
-import { useAudio } from 'src/hooks/useAudio/useAudio';
+import { useAudio } from 'hooks/useAudio/useAudio';
 
 interface GameFieldProps {
   deck: CardType[];

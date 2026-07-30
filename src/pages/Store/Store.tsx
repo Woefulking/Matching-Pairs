@@ -1,14 +1,10 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ALL_THEMES, GAME_THEMES } from 'consts/consts';
 import type { GameThemesType } from 'types/types';
-
 import { Header } from 'components/Header';
 import { MenuButton } from 'components/MenuButton';
 import { StoreCard } from './StoreCard';
 import { StorePreview } from './StorePreview';
-
-import ArrowBack from 'assets/general/arrow.png';
-import Coin from 'assets/general/coin.png';
 
 interface StoreProps {
   totalCoins: number;
@@ -126,7 +122,7 @@ export const Store = ({
         onClick={onBack}
       >
         <img
-          src={ArrowBack}
+          src="/assets/general/arrow.png"
           alt="back"
           className="pixelated h-full w-full object-contain md:h-auto"
         />
@@ -141,7 +137,7 @@ export const Store = ({
             <div className="flex flex-row items-center justify-center">
               <img
                 className="pixelated h-8 w-8 lg:h-12 lg:w-12 2xl:h-12 2xl:w-12"
-                src={Coin}
+                src="/assets/general/coin.png"
                 alt="coins"
               />
               <span className="text-lg font-bold text-amber-400 md:text-xl lg:text-3xl">
