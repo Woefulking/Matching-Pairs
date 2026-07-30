@@ -1,75 +1,88 @@
-# React + TypeScript + Vite
+# Pixel Pairs
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-3.4-teal)
 
-Currently, two official plugins are available:
+![demo](./gifs/demo.gif)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[Description](#description) • [Features](#features) • [Tech Stack](#techstack) • [Installation](#installation)
 
-## React Compiler
+## Description
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+**Pixel Pairs** is a responsive, retro-style card matching (Memory) game built with `React`, `TypeScript`, and `Tailwind CSS`. It delivers a rich arcade experience with progression, in-game economy, deep customization, and fully hand-drawn pixel-art assets.
 
-Note: This will impact Vite dev & build performances.
+## Features
 
-## Expanding the ESLint configuration
+### 🎮 Adaptive Game Loop & Grid Scaling
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Three difficulty levels (Easy, Medium, Hard) dynamically adjust the deck size — from 8 to 16 cards. Each difficulty generates a unique board layout, and the grid automatically scales to fit any screen size.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+![difficulty](./gifs/difficulty.gif)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 🎨 Theme Customization
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Four fully hand-drawn themes: Fruits, Ocean, Space, and Ancient Egypt. Each theme features unique illustrations for both the front and back of the cards
+
+![themes](./gifs/themes.gif)
+
+### 🛒 In-Game Store & Economy
+
+Earn coins by winning rounds and spend them in the store to unlock new card decks. The store includes:
+
+- Smart keyword search — filter themes by name or tags
+- Live preview — see every card in the deck before purchasing
+
+![store](./gifs/store.gif)
+
+### 📊 Player Statistics
+
+Track your performance across all difficulty levels:
+
+- **Wins** — total victories per difficulty
+- **Best Time** — fastest completion for each mode
+- **Best Moves** — most efficient round per difficulty
+
+![statistics](./gifs/statistics.gif)
+
+### 🔉 Audio Mixer with Persistent Settings
+
+The audio system is powered by React Context and works like a real hardware mixer:
+
+- **Music** — automatically loops background track
+- **Sound Effects** — separate sliders for clicks, matches, wins, and errors
+
+![settings](./gifs/settings.gif)
+
+All audio settings, along with your game progress (unlocked themes, coin balance, statistics), are automatically saved to `localStorage` and restored on reload.
+
+## TechStack
+
+- **React** — UI and state management
+- **TypeScript** — type safety and better DX
+- **Tailwind CSS** — responsive styling
+- **React Context** — audio system only (music + SFX mixer)
+- **Custom Hooks** + useReducer — game logic, progress, and state transitions
+- **localStorage** — persistent player data
+
+## Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/Woefulking/Pixel-Pairs
+cd Pixel-Pairs
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+npm install
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Run the project
+
+```bash
+npm run dev
 ```

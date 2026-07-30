@@ -6,7 +6,12 @@
     url('/src/assets/fonts/VT323-Regular.ttf') format('truetype'),
 }
 
+
 @layer base {
+  img.favicon {
+    image-rendering: pixelated;
+  }
+
   * {
     margin: 0;
     padding: 0;

@@ -1,4 +1,4 @@
-import { initialState } from '../store/appReducer';
+import { initialState } from '../reducers/appReducer';
 import type { AppState, GameThemesType } from '../types/types';
 
 export const getSavedAppData = (): AppState => {

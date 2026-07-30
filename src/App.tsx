@@ -18,9 +18,6 @@ function App() {
     setActiveTheme,
   } = useApp();
 
-  //TODO
-  //Разобраться в файлах и переложить все по папочкам
-
   function getCurrentScreen() {
     switch (state.screen) {
       case 'splash':
