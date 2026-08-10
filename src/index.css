@@ -6,142 +6,11 @@
     url('/assets/fonts/VT323-Regular.ttf') format('truetype'),
 }
 
-
-@layer base {
-  img.favicon {
-    image-rendering: pixelated;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  ::-webkit-scrollbar-button {
-    display: none;
-    width: 0;
-    height: 0;
-  }
-
-  body {
-    margin: 0;
-    font-family: 'pixel', sans-serif;
-    line-height: 1;
-  }
-
-  #root {
-    height: 100vh;
-  }
-
-  button {
-    cursor: pointer;
-    font-family: inherit;
-  }
-}
-
-@layer components {
-  .pixelated {
-    image-rendering: pixelated;
-  }
-
-  .button {
-    min-width: 140px;
-    padding: 0.25rem 4px;
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-transform: uppercase;
-
-    border-radius: 4px;
-
-    transition-property: all;
-    transition-duration: 200ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-
-    background-color: #0f172a;
-  }
-
-  .button:hover {
-    color: #0f172a;
-    transform: translateY(-2px);
-  }
-
-  .button:active {
-    transform: translateY(0);
-  }
-
-  .button-blue {
-    color: #ffffff;
-    border: 3px solid #38bdf8;
-  }
-
-  .button-blue:hover {
-    background-color: #38bdf8;
-    box-shadow: 0 0 15px #38bdf8;
-  }
-
-  .button-blue:active {
-    box-shadow: 0 0 5px #38bdf8;
-  }
-
-  .button-purple {
-    color: #C084FC;
-    border: 3px solid #a855f7;
-  }
-
-  .button-purple:hover {
-    background-color: #a855f7;
-    box-shadow: 0 0 15px #a855f7;
-  }
-
-  .button-blue:active {
-    box-shadow: 0 0 5px #a855f7;
-  }
-
-  .button-red {
-    color: #f87171;
-    border: 3px solid #ef4444;
-  }
-
-  .button-red:hover {
-    background-color: #ef4444;
-    box-shadow: 0 0 15px #ef4444;
-  }
-
-  .button-red:active {
-    box-shadow: 0 0 5px #ef4444;
-  }
-
-  .button-green {
-    color: #34D399;
-    border: 3px solid #10b981;
-  }
-
-  .button-green:hover {
-    background-color: #10b981;
-    box-shadow: 0 0 15px #10b981;
-  }
-
-  .button-green:active {
-    box-shadow: 0 0 5px #10b981;
-  }
-
-  .transparent {
-    background: none;
-    border: none;
-  }
-
-  .jumping {
-    animation: jump .5s ease-in-out;
-    animation-delay: 500ms;
-    transform-origin: bottom;
-  }
+@theme {
+  --font-pixel: 'pixel', sans-serif;
+  --animate-jump: jump 0.5s ease-in-out 500ms;
+  --animate-shake: shake 0.4s ease-in-out 500ms;
+  --animate-float-up: floatUp var(--anim-duration) linear var(--anim-delay) infinite;
 
   @keyframes jump {
 
@@ -165,11 +34,6 @@
     85% {
       transform: translateY(0) scale(1.2, 0.75);
     }
-  }
-
-  .shake {
-    animation: shake 0.4s ease-in-out;
-    animation-delay: 500ms;
   }
 
   @keyframes shake {
@@ -204,28 +68,6 @@
     }
   }
 
-  @keyframes floatDiagonal {
-    0% {
-      transform: translateY(0) translateX(0) rotate(45deg);
-    }
-
-    100% {
-      transform: translateY(-130vh) translateX(20vw);
-    }
-  }
-
-  .animate-float-diagonal {
-    position: absolute;
-    top: 110%;
-    transform: rotate(var(--anim-rotate));
-    animation-name: floatUp;
-    animation-delay: var(--anim-delay);
-    animation-duration: var(--anim-duration);
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    will-change: transform;
-  }
-
   @keyframes floatUp {
     0% {
       transform: translateY(0) rotate(var(--anim-rotate));
@@ -235,4 +77,150 @@
       transform: translateY(-120vh) rotate(var(--anim-rotate));
     }
   }
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-pixel);
+    line-height: 1;
+  }
+
+  img.favicon {
+    image-rendering: pixelated;
+  }
+
+  #root {
+    height: 100vh;
+  }
+
+  button {
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+@utility pixelated {
+  image-rendering: pixelated;
+}
+
+@utility button {
+  min-width: 140px;
+  padding: 0.25rem 4px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  border-radius: 4px;
+
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+
+  background-color: var(--color-slate-900);
+
+  &:hover {
+    color: var(--color-slate-900);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@utility button-blue {
+  color: var(--color-white);
+  border: 3px solid var(--color-sky-400);
+
+  &:hover {
+    background-color: var(--color-sky-400);
+    box-shadow: 0 0 15px var(--color-sky-400);
+  }
+
+  &:active {
+    box-shadow: 0 0 5px var(--color-sky-400);
+  }
+}
+
+@utility button-purple {
+  color: var(--color-purple-400);
+  border: 3px solid var(--color-purple-500);
+
+  &:hover {
+    background-color: var(--color-purple-500);
+    box-shadow: 0 0 15px var(--color-purple-500);
+  }
+
+  &:active {
+    box-shadow: 0 0 5px var(--color-purple-500);
+  }
+}
+
+@utility button-red {
+  color: var(--color-red-400);
+  border: 3px solid var(--color-red-500);
+
+  &:hover {
+    background-color: var(--color-red-500);
+    box-shadow: 0 0 15px var(--color-red-500);
+  }
+
+  &:active {
+    box-shadow: 0 0 5px var(--color-red-500);
+  }
+}
+
+@utility button-green {
+  color: var(--color-emerald-400);
+  border: 3px solid var(--color-emerald-500);
+
+  &:hover {
+    background-color: var(--color-emerald-500);
+    box-shadow: 0 0 15px var(--color-emerald-500);
+  }
+
+  &:active {
+    box-shadow: 0 0 5px var(--color-emerald-500);
+  }
+}
+
+@utility transparent {
+  background: none;
+  border: none;
+}
+
+@utility jumping {
+  animation: var(--animate-jump);
+  transform-origin: bottom;
+}
+
+@utility shake {
+  animation: var(--animate-shake);
+}
+
+@utility animate-float-diagonal {
+  position: absolute;
+  top: 110%;
+  transform: rotate(var(--anim-rotate));
+  animation: var(--animate-float-up);
+  will-change: transform;
 }
